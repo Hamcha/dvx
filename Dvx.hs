@@ -1,18 +1,10 @@
+{-# LANGUAGE LambdaCase #-}
+
 module Main where
 
 import Utils (trim)
-
-testtext :: String
-testtext = "\
-\ITALIANI!               \n\
-\                        \n\
-\DEFINENDO L'ADDIZIONE,  \n\
-\    OVE ANNA, GIORGIO   \n\
-\    È PIV ANNA, GIORGIO.\n\
-\                        \n\
-\SCRIVO L'ADDIZIONE      \n\
-\    DI XV, IV.          \n\
-\"
+import System.Environment
+import System.IO
 
 tokenize :: [String] -> [[String]]
 tokenize =
@@ -32,4 +24,7 @@ splitAndKeep c s (x:xs)  =
     find (c:cx) x | c == x    = Just c
                   | otherwise = find cx x
 
-main = print $ tokenize $ lines testtext
+main =
+    getArgs >>=
+    \case []     -> putStr "Usage: dvx <file.dvx>\n"
+          (x:xs) -> print . tokenize . lines =<< readFile x
