@@ -1,4 +1,4 @@
-module Dvx.Romans 
+module Dvx.Romans
 ( dtor
 , rtod
 , romanize
@@ -16,14 +16,13 @@ dtor x
 rtod :: String -> Int
 rtod ""     = 0
 rtod "ZERO" = 0
-rtod x      =
-    rsum (reverse . map rconv $ x) 0
+rtod n      =
+    rsum (reverse $ map rconv n) 0
     where
     rsum :: [Int] -> Int -> Int
-    rsum [] _       = 0
-    rsum (x:xs) max'
-        | x > max'  = x + rsum xs x
-        | otherwise = rsum xs max' - x
+    rsum []     _                = 0
+    rsum (x:xs) maxN | x > maxN  = x + rsum xs x
+                     | otherwise = rsum xs maxN - x
     rconv 'M' = 1000
     rconv 'D' = 500
     rconv 'C' = 100
@@ -36,5 +35,5 @@ rtod x      =
 romanize :: [String] -> [String]
 romanize []     = []
 romanize (x:xs)
-    | all (`elem` "MDCLXVI") x = (show . rtod $ x) : (romanize xs)
+    | all (`elem` "MDCLXVI") x = (show $ rtod x) : (romanize xs)
     | otherwise                =  x : romanize xs
