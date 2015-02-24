@@ -1,0 +1,20 @@
+Name:           Dvx
+Version:        0.0.1
+Cabal-Version:  >= 1.2
+Build-Type:     Simple
+License:        MIT
+Author:         Alessandro Gatti, <silverweed nome qui>
+Maintainer:     zikyky@gmail.com
+Homepage:       https://github.com/Hamcha/dvx
+Category:       Language
+Synopsis:       An italian language that promotes peace and tolerance
+
+Executable dvx
+    main-is: dvx.hs
+
+    Build-depends:
+        base               ==4.*
+
+Source-Repository head
+    type:       git
+    location:   git://github.com/Hamcha/dvx.git
