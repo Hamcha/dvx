@@ -7,19 +7,23 @@ module Dvx.Romans
 dtor :: Int -> String
 dtor 0 = "ZERO"
 dtor x = show x
+{- TODO
+dtor x
+    | x > 1000 = 'M' : dtor $ x - 1000
+    | x > 100  = puppa
+-}
 
 rtod :: String -> Int
 rtod ""     = 0
 rtod "ZERO" = 0
 rtod x      =
-    rsum (reverse . map rconv $ x) 0 0
+    rsum (reverse . map rconv $ x) 0
     where
-    rsum :: [Int] -> Int -> Int -> Int
-    rsum [] tot _       = tot
-    rsum (x:xs) tot max = if x > max then
-                              rsum xs (tot + x) x
-                          else
-                              rsum xs (tot - x) max
+    rsum :: [Int] -> Int -> Int
+    rsum [] _       = 0
+    rsum (x:xs) max'
+        | x > max'  = x + rsum xs x
+        | otherwise = rsum xs max' - x
     rconv 'M' = 1000
     rconv 'D' = 500
     rconv 'C' = 100
@@ -31,7 +35,6 @@ rtod x      =
 
 romanize :: [String] -> [String]
 romanize []     = []
-romanize (x:xs) = if all (`elem` "MDCLXVI") x then
-                      (show . rtod $ x) : (romanize xs)
-                  else
-                      x : romanize xs
+romanize (x:xs)
+    | all (`elem` "MDCLXVI") x = (show . rtod $ x) : (romanize xs)
+    | otherwise                =  x : romanize xs
