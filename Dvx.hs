@@ -8,9 +8,10 @@ import System.IO
 
 tokenize :: [String] -> [[String]]
 tokenize =
-    map tokenizeLine
+    nonempty . map (nonempty . tokenizeLine)
     where
     tokenizeLine = splitAndKeep " ," [] . trim
+    nonempty = filter (\x -> length x > 0)
 
 splitAndKeep :: [Char] -> String -> String -> [String]
 splitAndKeep _ s  []     = s : []
@@ -26,5 +27,5 @@ splitAndKeep c s (x:xs)  =
 
 main =
     getArgs >>=
-    \case []     -> putStr "Usage: dvx <file.dvx>\n"
+    \case []     -> getProgName >>= \x -> putStr $ concat ["Usage: ", x, " <file.dvx>\n"]
           (x:xs) -> print . tokenize . lines =<< readFile x
