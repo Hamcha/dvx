@@ -3,7 +3,7 @@ Version:        0.0.1
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
 License:        MIT
-Author:         Alessandro Gatti, <silverweed nome qui>
+Author:         Alessandro Gatti, Giacomo Parolini
 Maintainer:     zikyky@gmail.com
 Homepage:       https://github.com/Hamcha/dvx
 Category:       Language
