@@ -26,11 +26,16 @@ parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 
 -- |Given a String, returns the corresponding token with its semantic value, if any.
 parseValue :: String -> DvxExpr 
-parseValue (c:[]) 
-             | c `elem` separators              = DvxToken (token [c], Nothing)
-             | otherwise                        = DvxToken (token [c], Just $ DvxString [c])
-parseValue x | head x == '\'' && last x == '\'' = DvxToken (NUMBER   , Just $ DvxInt $ rtod $ middle x)
-	     | otherwise                        = DvxToken (token x  , Just $ DvxString x)
+parseValue (c:[]) -- separator, no semantic value
+                  | c `elem` separators              = DvxToken (token [c], Nothing)
+	          -- an identifier
+                  | otherwise                        = DvxToken (token [c], lookupSymbol [c])
+parseValue x      -- a number literal
+                  | head x == '\'' && last x == '\'' = DvxToken (NUMBER   , Just $ DvxInt $ rtod $ middle x)
+	          -- a string literal
+                  | head x == '{' && last x == '}'   = DvxToken (STRING   , Just $ DvxString $ middle x)
+	          -- either a keyword or an identifier
+	          | otherwise                        = DvxToken (token x  , lookupSymbol x)
 
 tokenize :: [String] -> [[String]]
 tokenize =
@@ -38,3 +43,8 @@ tokenize =
     where
     tokenizeLine = splitAndKeep separators [] . trim
     nonempty = filter (not . null)
+
+
+-- Uhm...how are we going to keep a symbol table?
+lookupSymbol :: String -> Maybe DvxValue
+lookupSymbol x = Just $ DvxString x  -- TODO
