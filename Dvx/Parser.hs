@@ -5,7 +5,7 @@ module Dvx.Parser
 
 import Dvx.Tokens (token, DvxTokName(..))
 import Dvx.Romans
-import Dvx.Utils (trim, splitAndKeep, isNumeric)
+import Dvx.Utils (trim, splitAndKeep, isNumeric, middle)
 
 data DvxExpr  = DvxToken  (DvxTokName, Maybe DvxValue) 
               | DvxList   [DvxExpr] 
@@ -27,14 +27,14 @@ parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 -- |Given a String, returns the corresponding token with its semantic value, if any.
 parseValue :: String -> DvxExpr 
 parseValue (c:[]) 
-             | c `elem` separators = DvxToken (token [c], Nothing)
-             | otherwise           = DvxToken (token [c], Just $ DvxString [c])
-parseValue x | isNumeric x         = DvxToken (NUMBER, Just $ DvxInt $ read x)
-	     | otherwise           = DvxToken (STRING, Just $ DvxString x)
+             | c `elem` separators              = DvxToken (token [c], Nothing)
+             | otherwise                        = DvxToken (token [c], Just $ DvxString [c])
+parseValue x | head x == '\'' && last x == '\'' = DvxToken (NUMBER   , Just $ DvxInt $ rtod $ middle x)
+	     | otherwise                        = DvxToken (token x  , Just $ DvxString x)
 
 tokenize :: [String] -> [[String]]
 tokenize =
-    nonempty . map (romanize . nonempty . tokenizeLine)
+    nonempty . map (nonempty . tokenizeLine)
     where
     tokenizeLine = splitAndKeep separators [] . trim
     nonempty = filter (not . null)

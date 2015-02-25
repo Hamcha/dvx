@@ -1,5 +1,6 @@
 module Dvx.Utils
 ( isNumeric
+, middle
 , splitAndKeep
 , trim
 ) where
@@ -24,3 +25,8 @@ splitAndKeep c s (x:xs)  =
 
 isNumeric :: String -> Bool
 isNumeric = all isDigit
+
+middle :: String -> String
+middle []     = error "Called middle on empty string."
+middle (x:[]) = error "Called middle on length 1 string."
+middle x      = tail $ init x

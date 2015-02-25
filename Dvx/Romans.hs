@@ -38,7 +38,7 @@ rtod n      =
     rconv 'X' = 10
     rconv 'V' = 5
     rconv 'I' = 1
-    rconv  x  = error $ "Invalid letter: " ++ [x]
+    rconv  x  = error $ "Invalid letter in roman number: " ++ [x]
 
 romanize :: [String] -> [String]
 romanize []     = []
