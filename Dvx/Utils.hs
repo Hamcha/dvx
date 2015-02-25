@@ -1,9 +1,10 @@
 module Dvx.Utils
-( trim
+( isNumeric
 , splitAndKeep
+, trim
 ) where
 
-import Data.Char (isSpace)
+import Data.Char (isSpace, isDigit)
 
 trim :: String -> String
 trim = f . f where f = reverse . dropWhile isSpace
@@ -19,3 +20,7 @@ splitAndKeep c s (x:xs)  =
     find []     _             = Nothing
     find (i:ix) j | i == j    = Just j
                   | otherwise = find ix j
+
+
+isNumeric :: String -> Bool
+isNumeric = all isDigit

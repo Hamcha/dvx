@@ -1,3 +1,6 @@
+dvx
 *.hi
+*.swp
+*~
 *.o
 dist

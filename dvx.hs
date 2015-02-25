@@ -9,4 +9,4 @@ main :: IO ()
 main =
     getArgs >>=
     \case []    -> getProgName >>= \x -> putStr $ concat ["Usage: ", x, " <file.dvx>\n"]
-          (x:_) -> print . tokenize . lines =<< readFile x
+          (x:_) -> print . (map parseLine) . tokenize . lines =<< readFile x
