@@ -1,6 +1,6 @@
 module Dvx.Tokens
 ( token
-, DvxValue(..) 
+, DvxValue(..)
 ) where
 
 import Dvx.Utils (isNumeric)
@@ -8,9 +8,9 @@ import Dvx.Utils (isNumeric)
 data DvxValue = BANG
               | COLON
               | COMMA
-              | DEFN        
-              | DEFNARGS    
-              | DEFNBODY    
+              | DEFN
+              | DEFNARGS
+              | DEFNBODY
               | DEFVAR
               | DOT
               | FNCALLBODY
