@@ -1,7 +1,7 @@
 #!/usr/bin/awk -f
 # Prettifies a Haskell list
 
-func print_indent(ind,    i) {
+function print_indent(ind,    i) {
 	for (i = 0; i < ind; ++i)
 		printf "\t"
 }
