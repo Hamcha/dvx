@@ -3,17 +3,12 @@ module Dvx.Parser
 , parseLine
 ) where
 
-import Dvx.Tokens (token, DvxTokName(..))
+import Dvx.Tokens (token, DvxValue(..))
 import Dvx.Romans
 import Dvx.Utils (trim, splitAndKeep, isNumeric, middle)
 
-data DvxExpr  = DvxToken  (DvxTokName, Maybe DvxValue) 
-              | DvxList   [DvxExpr] 
-	      deriving Show
-
-data DvxValue = DvxInt    Int 
-              | DvxString String
-	     -- | DvxFunc   (String, DvxList)
+data DvxExpr  = DvxToken DvxValue
+              | DvxList  [DvxExpr] 
 	      deriving Show
 
 separators = " ,.!:"
@@ -27,15 +22,15 @@ parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 -- |Given a String, returns the corresponding token with its semantic value, if any.
 parseValue :: String -> DvxExpr 
 parseValue (c:[]) -- separator, no semantic value
-                  | c `elem` separators              = DvxToken (token [c], Nothing)
+                  | c `elem` separators              = DvxToken $ token [c]
 	          -- an identifier
-                  | otherwise                        = DvxToken (token [c], lookupSymbol [c])
+                  | otherwise                        = DvxToken $ token [c]
 parseValue x      -- a number literal
-                  | head x == '\'' && last x == '\'' = DvxToken (NUMBER   , Just $ DvxInt $ rtod $ middle x)
+                  | head x == '\'' && last x == '\'' = DvxToken $ NUMBER $ rtod $ middle x
 	          -- a string literal
-                  | head x == '{' && last x == '}'   = DvxToken (STRING   , Just $ DvxString $ middle x)
+                  | head x == '{' && last x == '}'   = DvxToken $ STRING $ middle x
 	          -- either a keyword or an identifier
-	          | otherwise                        = DvxToken (token x  , lookupSymbol x)
+	          | otherwise                        = DvxToken $ token x
 
 tokenize :: [String] -> [[String]]
 tokenize =
@@ -43,8 +38,3 @@ tokenize =
     where
     tokenizeLine = splitAndKeep separators [] . trim
     nonempty = filter (not . null)
-
-
--- Uhm...how are we going to keep a symbol table?
-lookupSymbol :: String -> Maybe DvxValue
-lookupSymbol x = Just $ DvxString x  -- TODO

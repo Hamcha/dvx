@@ -1,29 +1,29 @@
 module Dvx.Tokens
 ( token
-, DvxTokName(..)
+, DvxValue(..) 
 ) where
 
 import Dvx.Utils (isNumeric)
 
-data DvxTokName = BANG
-		| COLON
-                | COMMA
-		| DEFN
-		| DEFNARGS
-		| DEFNBODY
-		| DEFVAR
-		| DOT
-		| FNCALLBODY
-		| NAME
-		| NUMBER
-		| PRELUDE
-		| SPACE
-		| STRING
-		| VARVALUE
-		deriving (Eq, Show)
+data DvxValue = BANG
+              | COLON
+              | COMMA
+              | DEFN        
+              | DEFNARGS    
+              | DEFNBODY    
+              | DEFVAR
+              | DOT
+              | FNCALLBODY
+              | NAME       String
+              | NUMBER     Int
+              | PRELUDE
+              | SPACE
+              | STRING     String
+              | VARVALUE
+              deriving (Eq, Show)
 
 -- keywords definition
-token :: String -> DvxTokName
+token :: String -> DvxValue
 token " "             = SPACE
 token ","             = COMMA
 token "!"             = BANG
@@ -36,4 +36,4 @@ token "È"             = DEFNBODY
 token "NOMINO"        = DEFVAR
 token "COME"          = VARVALUE
 token "DI"            = FNCALLBODY
-token x               = NAME
+token x               = NAME x
