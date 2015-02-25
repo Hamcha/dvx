@@ -34,7 +34,8 @@ parseValue x      -- a number literal
 
 tokenize :: [String] -> [[String]]
 tokenize =
-    nonempty . map (nonempty . tokenizeLine)
+    nonempty . map (nonempty . tokenizeLine . stripComments)
     where
-    tokenizeLine = splitAndKeep separators [] . trim
-    nonempty = filter (not . null)
+    stripComments = takeWhile (/= 'U')
+    tokenizeLine  = splitAndKeep separators [] . trim
+    nonempty      = filter (not . null)
