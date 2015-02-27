@@ -3,35 +3,33 @@ module Dvx.Tokens
 , DvxValue(..)
 ) where
 
-data DvxValue = BANG
-              | COLON
-              | COMMA
-              | DEFN
-              | DEFNARGS
-              | DEFNBODY
-              | DEFVAR
-              | DOT
+data DvxValue = TColon
+              | TComma
+              | TDefn
+              | TDefnArgs
+              | TDefnBody
+              | TDefVar
+              | TPeriod
               | FNCALLBODY
-              | NAME       String
-              | NUMBER     Int
-              | PRELUDE
-              | SPACE
-              | STRING     String
-              | VARVALUE
+              | TName      String
+              | TNumber    Int
+              | TPrelude
+              | TSpace
+              | TString    String
+              | TVarValue
               deriving (Eq, Show)
 
 -- keywords definition
 token :: String -> DvxValue
-token " "             = SPACE
-token ","             = COMMA
-token "!"             = BANG
-token "."             = DOT
-token ":"             = COLON
-token "ITALIANI"      = PRELUDE
-token "DEFINENDO"     = DEFN
-token "OVE"           = DEFNARGS
-token "È"             = DEFNBODY
-token "NOMINO"        = DEFVAR
-token "COME"          = VARVALUE
-token "DI"            = FNCALLBODY
-token x               = NAME x
+token " "             = TSpace
+token ","             = TComma
+token "!"             = TPeriod
+token "."             = TPeriod
+token ":"             = TColon
+token "ITALIANI"      = TPrelude
+token "DEFINENDO"     = TDefn
+token "OVE"           = TDefnArgs
+token "È"             = TDefnBody
+token "NOMINO"        = TDefVar
+token "COME"          = TVarValue
+token x               = TName x

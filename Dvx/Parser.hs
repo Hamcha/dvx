@@ -9,7 +9,7 @@ import Dvx.Utils (trim, splitAndKeep, middle)
 
 data DvxExpr  = DvxToken DvxValue
               | DvxList  [DvxExpr]
-	      deriving Show
+              deriving Show
 
 separators :: String
 separators = " ,.!:"
@@ -24,14 +24,14 @@ parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 parseValue :: String -> DvxExpr
 parseValue (c:[]) -- separator, no semantic value
                   | c `elem` separators              = DvxToken $ token [c]
-	          -- an identifier
+                  -- an identifier
                   | otherwise                        = DvxToken $ token [c]
 parseValue x      -- a number literal
-                  | head x == '\'' && last x == '\'' = DvxToken $ NUMBER $ rtod $ middle x
-	          -- a string literal
-                  | head x == '{' && last x == '}'   = DvxToken $ STRING $ middle x
-	          -- either a keyword or an identifier
-	          | otherwise                        = DvxToken $ token x
+                  | head x == '\'' && last x == '\'' = DvxToken $ TNumber $ rtod $ middle x
+                  -- a string literal
+                  | head x == '{' && last x == '}'   = DvxToken $ TString $ middle x
+                  -- either a keyword or an identifier
+                  | otherwise                        = DvxToken $ token x
 
 tokenize :: [String] -> [[String]]
 tokenize =
