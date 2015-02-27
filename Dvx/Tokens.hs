@@ -10,7 +10,6 @@ data DvxValue = TColon
               | TDefnBody
               | TDefVar
               | TPeriod
-              | FNCALLBODY
               | TName      String
               | TNumber    Int
               | TPrelude
