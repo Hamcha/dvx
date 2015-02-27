@@ -28,5 +28,5 @@ isNumeric = all isDigit
 
 middle :: String -> String
 middle []     = error "Called middle on empty string."
-middle (x:[]) = error "Called middle on length 1 string."
+middle (_:[]) = error "Called middle on length 1 string."
 middle x      = tail $ init x

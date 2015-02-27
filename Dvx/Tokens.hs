@@ -3,8 +3,6 @@ module Dvx.Tokens
 , DvxValue(..)
 ) where
 
-import Dvx.Utils (isNumeric)
-
 data DvxValue = BANG
               | COLON
               | COMMA

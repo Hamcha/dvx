@@ -5,12 +5,13 @@ module Dvx.Parser
 
 import Dvx.Tokens (token, DvxValue(..))
 import Dvx.Romans
-import Dvx.Utils (trim, splitAndKeep, isNumeric, middle)
+import Dvx.Utils (trim, splitAndKeep, middle)
 
 data DvxExpr  = DvxToken DvxValue
-              | DvxList  [DvxExpr] 
+              | DvxList  [DvxExpr]
 	      deriving Show
 
+separators :: String
 separators = " ,.!:"
 
 -- |Destructures an array of Strings in a Dvx expression
@@ -20,7 +21,7 @@ parseLine (x:[]) = parseValue x
 parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 
 -- |Given a String, returns the corresponding token with its semantic value, if any.
-parseValue :: String -> DvxExpr 
+parseValue :: String -> DvxExpr
 parseValue (c:[]) -- separator, no semantic value
                   | c `elem` separators              = DvxToken $ token [c]
 	          -- an identifier

@@ -5,6 +5,7 @@ module Dvx.Romans
 , rtod
 ) where
 
+romanLetters :: String
 romanLetters = "MDCLXVI"
 
 dtor :: Int -> String
@@ -44,4 +45,4 @@ romanize :: [String] -> [String]
 romanize []     = []
 romanize (x:xs)
     | all (`elem` romanLetters) x = (show $ rtod x) : (romanize xs)
-    | otherwise                =  x : romanize xs
+    | otherwise                   =  x : romanize xs
