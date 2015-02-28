@@ -6,8 +6,6 @@ module Dvx.Tokens
 data DvxValue = TColon
               | TComma
               | TDefn
-              | TDefnArgs
-              | TDefnBody
               | TDefVar
               | TPeriod
               | TName      String
@@ -19,7 +17,7 @@ data DvxValue = TColon
               | TVarValue
               deriving (Eq, Show)
 
--- keywords definition
+-- |Keywords definition
 token :: String -> DvxValue
 token " "             = TSpace
 token ","             = TComma
@@ -29,8 +27,8 @@ token ":"             = TColon
 token ";"             = TSemicolon
 token "ITALIANI"      = TPrelude
 token "DEFINENDO"     = TDefn
-token "OVE"           = TDefnArgs
-token "È"             = TDefnBody
 token "NOMINO"        = TDefVar
 token "COME"          = TVarValue
+token "DI"            = TSpace
+token "\9500\234"     = TSpace     -- È
 token x               = TName x

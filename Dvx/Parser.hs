@@ -5,7 +5,7 @@ module Dvx.Parser
 
 import Dvx.Tokens (token, DvxValue(..))
 import Dvx.Romans
-import Dvx.Utils (trim, splitAndKeep, splitOn, middle)
+import Dvx.Utils
 
 data DvxExpr  = DvxToken DvxValue
               | DvxList  [DvxExpr]
@@ -14,8 +14,14 @@ data DvxExpr  = DvxToken DvxValue
 separators :: String
 separators = " ,.!:;"
 
-parse :: [DvxValue] -> [[DvxExpr]]
-parse = map (foldr parseTokens []) . splitOn TPeriod
+parse :: [DvxValue] -> [DvxExpr]
+parse = joinsub . map (extract . foldr parseTokens []) . splitOn TPeriod
+
+extract :: [DvxExpr] -> [DvxExpr]
+extract []             = []
+extract (DvxToken x:DvxList y:ys) = (DvxList $ DvxToken x : extract y) : extract ys
+extract (DvxList x:xs) = extract x ++ extract xs
+extract x              = x
 
 parseTokens :: DvxValue -> [DvxExpr] -> [DvxExpr]
 parseTokens TSemicolon lst = DvxList [] : lst
@@ -27,12 +33,6 @@ parseTokens x          lst = prependList (head lst) x : tail lst
 prependList :: DvxExpr -> DvxValue -> DvxExpr
 prependList (DvxToken x) y = DvxList [DvxToken x, DvxToken y]
 prependList (DvxList  x) y = DvxList $ DvxToken y : x
-
--- |Destructures an array of Strings in a Dvx expression
--- parseLine :: [String] -> DvxExpr
--- parseLine []     = DvxList  []
--- parseLine (x:[]) = parseValue x
--- parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 
 -- |Given a String, returns the corresponding token with its semantic value, if any.
 parseValue :: String -> DvxValue
@@ -49,9 +49,8 @@ parseValue x      -- a number literal
 
 tokenize :: [String] -> [DvxValue]
 tokenize =
-    map parseValue . nonempty . tokenizeLine . join . map stripComments
+    map parseValue . nonempty . tokenizeLine . joinsub . map stripComments
     where
     stripComments = takeWhile (/= 'U')
     tokenizeLine  = splitAndKeep separators [] . trim
     nonempty      = filter (not . null)
-    join          = foldr (\a b -> a ++ b) []

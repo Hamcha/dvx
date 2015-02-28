@@ -1,5 +1,6 @@
 module Dvx.Utils
 ( isNumeric
+, joinsub
 , middle
 , splitAndKeep
 , splitOn
@@ -37,3 +38,6 @@ middle :: String -> String
 middle []     = error "Called middle on empty string."
 middle (_:[]) = error "Called middle on length 1 string."
 middle x      = tail $ init x
+
+joinsub :: [[a]] -> [a]
+joinsub = foldr (\a b -> a ++ b) []
