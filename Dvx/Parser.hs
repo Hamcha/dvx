@@ -3,39 +3,56 @@ module Dvx.Parser
 , parse
 ) where
 
-import Dvx.Tokens (token, DvxValue(..))
+import Dvx.Tokens
 import Dvx.Romans
 import Dvx.Utils
 
-data DvxExpr  = DvxToken DvxValue
-              | DvxList  [DvxExpr]
+data DvxExpr  = DvxTok  DvxToken                   -- Single token
+              | DvxCall DvxToken [DvxExpr]         -- Function call
+              | DvxFunc DvxToken [DvxExpr] DvxExpr -- Function definition
+              | DvxList [DvxExpr]                  -- List
               deriving Show
 
 separators :: String
 separators = " ,.!:;"
 
-parse :: [DvxValue] -> [DvxExpr]
-parse = joinsub . map (extract . foldr parseTokens []) . splitOn TPeriod
+parse :: [DvxToken] -> [DvxExpr]
+parse = joinsub . map (makeast . foldr parseTokens []) . splitOn TPeriod
 
-extract :: [DvxExpr] -> [DvxExpr]
-extract []             = []
-extract (DvxToken x:DvxList y:ys) = (DvxList $ DvxToken x : extract y) : extract ys
-extract (DvxList x:xs) = extract x ++ extract xs
-extract x              = x
+makeast :: [DvxExpr] -> [DvxExpr]
+makeast []     = []
+-- Nullcall (È, DI etc.)
+makeast (DvxTok TNullCall:xs) = makeast xs
+-- Function definition
+makeast (DvxTok TDefn
+        :DvxList (DvxTok name
+                 :DvxList (DvxTok TDefnArgs
+                          :DvxList args
+                          :DvxList expr
+                          :_)
+                 :_)
+        :ys)
+        = DvxFunc name args (makeast expr !! 0) : makeast ys
+-- Function call
+makeast (DvxTok x:DvxList y:ys) = DvxCall x (makeast y) : makeast ys
+-- List of list
+makeast (DvxList x:xs) = makeast x ++ makeast xs
+-- Plain token
+makeast (DvxTok  x:xs) = DvxTok x : makeast xs
 
-parseTokens :: DvxValue -> [DvxExpr] -> [DvxExpr]
+parseTokens :: DvxToken -> [DvxExpr] -> [DvxExpr]
 parseTokens TSemicolon lst = DvxList [] : lst
 parseTokens TComma     lst = lst
 parseTokens TSpace     lst = DvxList lst : []
-parseTokens x          []  = DvxList [DvxToken x] : []
+parseTokens x          []  = DvxList [DvxTok x] : []
 parseTokens x          lst = prependList (head lst) x : tail lst
 
-prependList :: DvxExpr -> DvxValue -> DvxExpr
-prependList (DvxToken x) y = DvxList [DvxToken x, DvxToken y]
-prependList (DvxList  x) y = DvxList $ DvxToken y : x
+prependList :: DvxExpr -> DvxToken -> DvxExpr
+prependList (DvxTok   x) y = DvxList [DvxTok x, DvxTok y]
+prependList (DvxList  x) y = DvxList $ DvxTok y : x
 
 -- |Given a String, returns the corresponding token with its semantic value, if any.
-parseValue :: String -> DvxValue
+parseValue :: String -> DvxToken
 parseValue (c:[]) -- separator, no semantic value
                   | c `elem` separators              = token [c]
                   -- an identifier
@@ -47,7 +64,7 @@ parseValue x      -- a number literal
                   -- either a keyword or an identifier
                   | otherwise                        = token x
 
-tokenize :: [String] -> [DvxValue]
+tokenize :: [String] -> [DvxToken]
 tokenize =
     map parseValue . nonempty . tokenizeLine . joinsub . map stripComments
     where

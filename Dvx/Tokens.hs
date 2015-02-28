@@ -1,12 +1,14 @@
 module Dvx.Tokens
 ( token
-, DvxValue(..)
+, DvxToken(..)
 ) where
 
-data DvxValue = TColon
+data DvxToken = TColon
               | TComma
               | TDefn
+              | TDefnArgs
               | TDefVar
+              | TNullCall
               | TPeriod
               | TName      String
               | TNumber    Int
@@ -18,7 +20,7 @@ data DvxValue = TColon
               deriving (Eq, Show)
 
 -- |Keywords definition
-token :: String -> DvxValue
+token :: String -> DvxToken
 token " "             = TSpace
 token ","             = TComma
 token "!"             = TPeriod
@@ -29,6 +31,7 @@ token "ITALIANI"      = TPrelude
 token "DEFINENDO"     = TDefn
 token "NOMINO"        = TDefVar
 token "COME"          = TVarValue
-token "DI"            = TSpace
-token "\9500\234"     = TSpace     -- È
+token "DI"            = TNullCall
+token "\9500\234"     = TNullCall  -- È
+token "OVE"           = TDefnArgs
 token x               = TName x
