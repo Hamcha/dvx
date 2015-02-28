@@ -1,6 +1,6 @@
 module Dvx.Parser
 ( tokenize
-, parseLine
+, parse
 ) where
 
 import Dvx.Tokens (token, DvxValue(..))
@@ -12,31 +12,43 @@ data DvxExpr  = DvxToken DvxValue
               deriving Show
 
 separators :: String
-separators = " ,.!:"
+separators = " ,.!:;"
+
+parse :: [DvxValue] -> [DvxExpr]
+parse = foldr parseTokens []
+
+parseTokens :: DvxValue -> [DvxExpr] -> [DvxExpr]
+parseTokens TPeriod lst = DvxList [] : lst
+parseTokens x       lst = prependList (head lst) x : tail lst
+
+prependList :: DvxExpr -> DvxValue -> DvxExpr
+prependList (DvxToken x) y = DvxList [DvxToken x, DvxToken y]
+prependList (DvxList  x) y = DvxList $ DvxToken y : x
 
 -- |Destructures an array of Strings in a Dvx expression
-parseLine :: [String] -> DvxExpr
-parseLine []     = DvxList  []
-parseLine (x:[]) = parseValue x
-parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
+-- parseLine :: [String] -> DvxExpr
+-- parseLine []     = DvxList  []
+-- parseLine (x:[]) = parseValue x
+-- parseLine (x:xs) = DvxList  (parseValue x : [parseLine xs])
 
 -- |Given a String, returns the corresponding token with its semantic value, if any.
-parseValue :: String -> DvxExpr
+parseValue :: String -> DvxValue
 parseValue (c:[]) -- separator, no semantic value
-                  | c `elem` separators              = DvxToken $ token [c]
+                  | c `elem` separators              = token [c]
                   -- an identifier
-                  | otherwise                        = DvxToken $ token [c]
+                  | otherwise                        = token [c]
 parseValue x      -- a number literal
-                  | head x == '\'' && last x == '\'' = DvxToken $ TNumber $ rtod $ middle x
+                  | head x == '\'' && last x == '\'' = TNumber $ rtod $ middle x
                   -- a string literal
-                  | head x == '{' && last x == '}'   = DvxToken $ TString $ middle x
+                  | head x == '{' && last x == '}'   = TString $ middle x
                   -- either a keyword or an identifier
-                  | otherwise                        = DvxToken $ token x
+                  | otherwise                        = token x
 
-tokenize :: [String] -> [[String]]
+tokenize :: [String] -> [DvxValue]
 tokenize =
-    nonempty . map (nonempty . tokenizeLine . stripComments)
+    map parseValue . nonempty . tokenizeLine . join . map stripComments
     where
     stripComments = takeWhile (/= 'U')
     tokenizeLine  = splitAndKeep separators [] . trim
     nonempty      = filter (not . null)
+    join          = foldr (\a b -> a ++ b) []

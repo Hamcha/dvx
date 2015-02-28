@@ -13,6 +13,7 @@ data DvxValue = TColon
               | TName      String
               | TNumber    Int
               | TPrelude
+              | TSemicolon
               | TSpace
               | TString    String
               | TVarValue
@@ -25,6 +26,7 @@ token ","             = TComma
 token "!"             = TPeriod
 token "."             = TPeriod
 token ":"             = TColon
+token ";"             = TSemicolon
 token "ITALIANI"      = TPrelude
 token "DEFINENDO"     = TDefn
 token "OVE"           = TDefnArgs
