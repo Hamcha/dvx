@@ -2,6 +2,7 @@ module Dvx.Utils
 ( isNumeric
 , middle
 , splitAndKeep
+, splitOn
 , trim
 ) where
 
@@ -10,12 +11,18 @@ import Data.Char (isSpace, isDigit)
 trim :: String -> String
 trim = f . f where f = reverse . dropWhile isSpace
 
+splitOn :: Eq a => a -> [a] -> [[a]]
+splitOn _ []  = []
+splitOn i lst = a : splitOn i bx
+                where
+                (a, (_:bx)) = break (== i) lst -- Get before/after separator
+
 splitAndKeep :: String -> String -> String -> [String]
 splitAndKeep _ s  []     = [s]
 splitAndKeep c s (x:xs)  =
     case find c x of
-        Just a  -> s : [a] : splitAndKeep c []         (trim xs)
-        Nothing ->           splitAndKeep c (s ++ [x]) xs
+        Just a  -> s : [a] : splitAndKeep c [] (trim xs)
+        Nothing -> splitAndKeep c (s ++ [x]) xs
     where
     find :: Eq a => [a] -> a -> Maybe a
     find []     _             = Nothing

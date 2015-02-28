@@ -5,7 +5,7 @@ module Dvx.Parser
 
 import Dvx.Tokens (token, DvxValue(..))
 import Dvx.Romans
-import Dvx.Utils (trim, splitAndKeep, middle)
+import Dvx.Utils (trim, splitAndKeep, splitOn, middle)
 
 data DvxExpr  = DvxToken DvxValue
               | DvxList  [DvxExpr]
@@ -14,12 +14,15 @@ data DvxExpr  = DvxToken DvxValue
 separators :: String
 separators = " ,.!:;"
 
-parse :: [DvxValue] -> [DvxExpr]
-parse = foldr parseTokens []
+parse :: [DvxValue] -> [[DvxExpr]]
+parse = map (foldr parseTokens []) . splitOn TPeriod
 
 parseTokens :: DvxValue -> [DvxExpr] -> [DvxExpr]
-parseTokens TPeriod lst = DvxList [] : lst
-parseTokens x       lst = prependList (head lst) x : tail lst
+parseTokens TSemicolon lst = DvxList [] : lst
+parseTokens TComma     lst = lst
+parseTokens TSpace     lst = DvxList lst : []
+parseTokens x          []  = DvxList [DvxToken x] : []
+parseTokens x          lst = prependList (head lst) x : tail lst
 
 prependList :: DvxExpr -> DvxValue -> DvxExpr
 prependList (DvxToken x) y = DvxList [DvxToken x, DvxToken y]
