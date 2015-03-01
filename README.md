@@ -7,11 +7,11 @@
 
 #### Parser status
 
-| Test file | Status                          |
-| --------- |---------------------------------|
-| test.dvx  | parses correctly                |
-| test2.dvx | parses correctly                |
-| short.dvx | parses correctly                |
+| :ok:               | Test file   | Notes                 |
+|:------------------:|-------------|-----------------------|
+| :white_check_mark: | test.dvx    | -                     |
+| :white_check_mark: | test2.dvx   | -                     |
+| :white_check_mark: | short.dvx   | -                     |
 
 #### Interpreter status
 
