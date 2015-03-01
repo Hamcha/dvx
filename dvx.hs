@@ -17,7 +17,7 @@ main :: IO ()
 main = getArgs >>= parseFlags F_None
 
 parseFlags :: Flag -> [String] -> IO ()
-parseFlags _ []        = getProgName >>= \x -> putStr $ concat ["Usage: ", x, "[-A] <file.dvx>\n"]
+parseFlags _ []        = getProgName >>= \x -> putStr $ concat ["Usage: ", x, " [-A] <file.dvx>\n"]
 parseFlags f ("-" :_ ) = isEOF       >>= parseStdin f []
 parseFlags _ ("-A":xs) = parseFlags F_PrintAST xs
 parseFlags f (x   :_ ) = readFile x >>= process f . lines
