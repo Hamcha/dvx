@@ -9,6 +9,7 @@
 
 | :ok:               | Test file   | Notes                 |
 |:------------------:|-------------|-----------------------|
+| :white_check_mark: | hello.dvx   | -                     |
 | :white_check_mark: | test.dvx    | -                     |
 | :white_check_mark: | test2.dvx   | -                     |
 | :white_check_mark: | short.dvx   | -                     |

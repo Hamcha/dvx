@@ -2,7 +2,8 @@ Name:           Dvx
 Version:        0.0.2
 Cabal-Version:  >= 1.2
 Build-Type:     Simple
-License:        JSON
+License:        OtherLicense
+License-File:   LICENSE
 Author:         Alessandro Gatti, Giacomo Parolini
 Maintainer:     zikyky@gmail.com
 Homepage:       https://github.com/Hamcha/dvx

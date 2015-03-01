@@ -9,9 +9,10 @@ import Dvx.Tokens
 import Dvx.Romans
 import Dvx.Utils
 
-type Function = [DvxExpr] -> DvxValue
+type Function = [DvxExpr] -> IO DvxValue
 
-data DvxValue = TypeInt Int
+data DvxValue = TypeNil
+              | TypeInt Int
               | TypeStr String
               | TypeFun Function
               | TypeLst [DvxValue]
@@ -26,7 +27,7 @@ data DvxExpr  = DvxTok   DvxToken                  -- Unparsed token
               | DvxStart                           -- "ITALIANI"
               | DvxConst DvxValue                  -- Constant
               | DvxVar   String                    -- Variable
-              | DvxCall  DvxToken [DvxExpr]        -- Function call
+              | DvxCall  String [DvxExpr]          -- Function call
               | DvxFunc  String [String] DvxExpr   -- Function definition
               | DvxDecl  String DvxExpr            -- Variable declaration
               | DvxList  [DvxExpr]                 -- List
@@ -63,7 +64,7 @@ makeast (DvxTok TDefVar
 -- Nullcall (È, DI etc.)
 makeast (DvxTok TNullCall  :xs) = makeast xs
 -- Function call
-makeast (DvxTok x:DvxList y:ys) = DvxCall x (makeast y) : makeast ys
+makeast (DvxTok (TName x):DvxList y:ys) = DvxCall x (makeast y) : makeast ys
 -- List of list
 makeast (DvxList x:xs) = makeast x ++ makeast xs
 -- Plain token
