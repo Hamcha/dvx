@@ -7,10 +7,10 @@ import Dvx.Tokens
 import Dvx.Romans
 import Dvx.Utils
 
-data DvxExpr  = DvxTok   DvxToken                   -- Single token
-              | DvxCall  DvxToken [DvxExpr]         -- Function call
-              | DvxFunc  DvxToken [DvxExpr] DvxExpr -- Function definition
-              | DvxList  [DvxExpr]                  -- List
+data DvxExpr  = DvxTok  DvxToken                   -- Single token
+              | DvxCall DvxToken [DvxExpr]         -- Function call
+              | DvxFunc DvxToken [DvxExpr] DvxExpr -- Function definition
+              | DvxList [DvxExpr]                  -- List
               deriving Show
 
 separators :: String

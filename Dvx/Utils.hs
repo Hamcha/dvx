@@ -22,7 +22,7 @@ splitAndKeep :: String -> String -> [String]
 splitAndKeep _ [] = []
 splitAndKeep f s  = a : [b] : splitAndKeep f bx
                     where
-                    (a, (b:bx)) = break (`elem` f) s
+                    (a, (b:bx)) = break (`elem` f) $ trim s
 
 isNumeric :: String -> Bool
 isNumeric = all isDigit
