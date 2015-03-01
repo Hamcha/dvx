@@ -27,7 +27,8 @@ data DvxExpr  = DvxTok   DvxToken                  -- Unparsed token
               | DvxConst DvxValue                  -- Constant
               | DvxVar   String                    -- Variable
               | DvxCall  DvxToken [DvxExpr]        -- Function call
-              | DvxFunc  DvxToken [String] DvxExpr -- Function definition
+              | DvxFunc  String [String] DvxExpr   -- Function definition
+              | DvxDecl  String DvxExpr            -- Variable declaration
               | DvxList  [DvxExpr]                 -- List
               deriving Show
 
@@ -42,7 +43,7 @@ makeast :: [DvxExpr] -> [DvxExpr]
 makeast [] = []
 -- Function definition
 makeast (DvxTok TDefn
-        :DvxList (DvxTok name
+        :DvxList (DvxTok (TName name)
                  :DvxList (DvxTok TDefnArgs
                           :DvxList args
                           :DvxList expr
@@ -50,6 +51,15 @@ makeast (DvxTok TDefn
                  :_)
         :ys)
         = DvxFunc name (getArgs args) (makeast expr !! 0) : makeast ys
+-- Variable declaration
+makeast (DvxTok TDefVar
+        :DvxList (DvxTok value
+                 :DvxList (DvxTok TVarValue
+                          :DvxList (DvxTok (TName name):_)
+                          :_)
+                 :_)
+        :ys)
+        = DvxDecl name (discover value) : makeast ys
 -- Nullcall (È, DI etc.)
 makeast (DvxTok TNullCall  :xs) = makeast xs
 -- Function call
