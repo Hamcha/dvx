@@ -13,16 +13,18 @@ trim :: String -> String
 trim = f . f where f = reverse . dropWhile isSpace
 
 splitOn :: Eq a => a -> [a] -> [[a]]
-splitOn _ []  = []
-splitOn i lst = a : splitOn i bx
-                where
-                (a, (_:bx)) = break (== i) lst -- Get before/after separator
+splitOn _ []              = []
+splitOn i lst | null b    = [a]
+              | otherwise = a : splitOn i (tail b)
+              where
+              (a, b) = break (== i) lst -- Get before/after separator
 
 splitAndKeep :: String -> String -> [String]
-splitAndKeep _ [] = []
-splitAndKeep f s  = a : [b] : splitAndKeep f bx
-                    where
-                    (a, (b:bx)) = break (`elem` f) $ trim s
+splitAndKeep _ []            = []
+splitAndKeep f s | null b    = [a]
+                 | otherwise = a : [head b] : splitAndKeep f (tail b)
+                 where
+                 (a, b) = break (`elem` f) $ trim s
 
 isNumeric :: String -> Bool
 isNumeric = all isDigit
