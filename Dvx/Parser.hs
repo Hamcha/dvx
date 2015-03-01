@@ -7,10 +7,10 @@ import Dvx.Tokens
 import Dvx.Romans
 import Dvx.Utils
 
-data DvxExpr  = DvxTok  DvxToken                   -- Single token
-              | DvxCall DvxToken [DvxExpr]         -- Function call
-              | DvxFunc DvxToken [DvxExpr] DvxExpr -- Function definition
-              | DvxList [DvxExpr]                  -- List
+data DvxExpr  = DvxTok   DvxToken                   -- Single token
+              | DvxCall  DvxToken [DvxExpr]         -- Function call
+              | DvxFunc  DvxToken [DvxExpr] DvxExpr -- Function definition
+              | DvxList  [DvxExpr]                  -- List
               deriving Show
 
 separators :: String
@@ -20,9 +20,7 @@ parse :: [DvxToken] -> [DvxExpr]
 parse = joinsub . map (makeast . foldr parseTokens []) . splitOn TPeriod
 
 makeast :: [DvxExpr] -> [DvxExpr]
-makeast []     = []
--- Nullcall (È, DI etc.)
-makeast (DvxTok TNullCall:xs) = makeast xs
+makeast [] = []
 -- Function definition
 makeast (DvxTok TDefn
         :DvxList (DvxTok name
@@ -33,6 +31,8 @@ makeast (DvxTok TDefn
                  :_)
         :ys)
         = DvxFunc name args (makeast expr !! 0) : makeast ys
+-- Nullcall (È, DI etc.)
+makeast (DvxTok TNullCall  :xs) = makeast xs
 -- Function call
 makeast (DvxTok x:DvxList y:ys) = DvxCall x (makeast y) : makeast ys
 -- List of list
@@ -69,5 +69,5 @@ tokenize =
     map parseValue . nonempty . tokenizeLine . joinsub . map stripComments
     where
     stripComments = takeWhile (/= 'U')
-    tokenizeLine  = splitAndKeep separators [] . trim
+    tokenizeLine  = splitAndKeep separators . trim
     nonempty      = filter (not . null)

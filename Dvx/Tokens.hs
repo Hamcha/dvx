@@ -21,17 +21,17 @@ data DvxToken = TColon
 
 -- |Keywords definition
 token :: String -> DvxToken
-token " "             = TSpace
-token ","             = TComma
-token "!"             = TPeriod
-token "."             = TPeriod
-token ":"             = TColon
-token ";"             = TSemicolon
-token "ITALIANI"      = TPrelude
-token "DEFINENDO"     = TDefn
-token "NOMINO"        = TDefVar
-token "COME"          = TVarValue
-token "DI"            = TNullCall
-token "\9500\234"     = TNullCall  -- È
-token "OVE"           = TDefnArgs
-token x               = TName x
+token " "         = TSpace
+token ","         = TComma
+token "!"         = TPeriod
+token "."         = TPeriod
+token ":"         = TColon
+token ";"         = TSemicolon
+token "ITALIANI"  = TPrelude
+token "DEFINENDO" = TDefn
+token "NOMINO"    = TDefVar
+token "COME"      = TVarValue
+token "DI"        = TNullCall
+token "\9500\234" = TNullCall  -- È
+token "OVE"       = TDefnArgs
+token x           = TName x
