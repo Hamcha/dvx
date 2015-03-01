@@ -1,5 +1,7 @@
 module Dvx.Parser
-( tokenize
+( DvxExpr(..)
+, DvxValue(..)
+, tokenize
 , parse
 ) where
 
@@ -7,10 +9,21 @@ import Dvx.Tokens
 import Dvx.Romans
 import Dvx.Utils
 
-data DvxExpr  = DvxTok  DvxToken                   -- Single token
-              | DvxCall DvxToken [DvxExpr]         -- Function call
-              | DvxFunc DvxToken [DvxExpr] DvxExpr -- Function definition
-              | DvxList [DvxExpr]                  -- List
+type Function = [DvxExpr] -> DvxValue
+
+data DvxValue = TypeInt Int
+              | TypeStr String
+             -- | TypeFun Function
+              | TypeLst [DvxValue]
+              deriving Show
+
+data DvxExpr  = DvxTok   DvxToken                  -- Unparsed token
+              | DvxStart                           -- "ITALIANI"
+              | DvxConst DvxValue                  -- Constant
+              | DvxVar   String                    -- Variable
+              | DvxCall  DvxToken [DvxExpr]        -- Function call
+              | DvxFunc  DvxToken [String] DvxExpr -- Function definition
+              | DvxList  [DvxExpr]                 -- List
               deriving Show
 
 separators :: String
@@ -19,6 +32,7 @@ separators = " ,.!:;"
 parse :: [DvxToken] -> [DvxExpr]
 parse = joinsub . map (makeast . foldr parseTokens []) . splitOn TPeriod
 
+-- |Makes a fully parsed AST off a raw tree
 makeast :: [DvxExpr] -> [DvxExpr]
 makeast [] = []
 -- Function definition
@@ -30,7 +44,7 @@ makeast (DvxTok TDefn
                           :_)
                  :_)
         :ys)
-        = DvxFunc name args (makeast expr !! 0) : makeast ys
+        = DvxFunc name (getArgs args) (makeast expr !! 0) : makeast ys
 -- Nullcall (È, DI etc.)
 makeast (DvxTok TNullCall  :xs) = makeast xs
 -- Function call
@@ -38,8 +52,23 @@ makeast (DvxTok x:DvxList y:ys) = DvxCall x (makeast y) : makeast ys
 -- List of list
 makeast (DvxList x:xs) = makeast x ++ makeast xs
 -- Plain token
-makeast (DvxTok  x:xs) = DvxTok x : makeast xs
+makeast (DvxTok  x:xs) = (discover x) : makeast xs
 
+-- |Parses plain tokens (DvxTok) into something meaningful
+discover :: DvxToken -> DvxExpr
+discover TPrelude    = DvxStart
+discover (TNumber n) = DvxConst $ TypeInt n
+discover (TString s) = DvxConst $ TypeStr s
+discover (TName   n) = DvxVar n
+discover x = DvxTok x
+
+-- |Gets a list of strings from a function declaration argument DvxList
+getArgs :: [DvxExpr] -> [String]
+getArgs []                    = []
+getArgs (DvxTok (TName x):xs) = x : getArgs xs
+getArgs _                     = error "Invalid token in function declaration arguments"
+
+-- |Parses a list plain tokens (DvxTok) into a tree
 parseTokens :: DvxToken -> [DvxExpr] -> [DvxExpr]
 parseTokens TSemicolon lst = DvxList [] : lst
 parseTokens TComma     lst = lst
@@ -47,6 +76,7 @@ parseTokens TSpace     lst = DvxList lst : []
 parseTokens x          []  = DvxList [DvxTok x] : []
 parseTokens x          lst = prependList (head lst) x : tail lst
 
+-- |Adds token to the beginning of a list, if both arguments are token, create a list of both
 prependList :: DvxExpr -> DvxToken -> DvxExpr
 prependList (DvxTok   x) y = DvxList [DvxTok x, DvxTok y]
 prependList (DvxList  x) y = DvxList $ DvxTok y : x
@@ -64,6 +94,7 @@ parseValue x      -- a number literal
                   -- either a keyword or an identifier
                   | otherwise                        = token x
 
+-- |Creates a list of tokens off lines of code
 tokenize :: [String] -> [DvxToken]
 tokenize =
     map parseValue . nonempty . tokenizeLine . joinsub . map stripComments
