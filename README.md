@@ -9,7 +9,7 @@
 
 | Test file | Status                          |
 | --------- |---------------------------------|
-| test.dvx  | parsers correctly               |
+| test.dvx  | parses correctly                |
 | test2.dvx | **program interrupts**          |
 | short.dvx | **var decl parsed incorrectly** |
 
