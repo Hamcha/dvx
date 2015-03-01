@@ -13,9 +13,14 @@ type Function = [DvxExpr] -> DvxValue
 
 data DvxValue = TypeInt Int
               | TypeStr String
-             -- | TypeFun Function
+              | TypeFun Function
               | TypeLst [DvxValue]
-              deriving Show
+
+instance Show DvxValue where
+    show (TypeInt x) = "Int " ++ show x
+    show (TypeStr x) = "Str " ++ show x
+    show (TypeLst x) = "Lst " ++ show x
+    show (TypeFun _) = "Function <Function>"
 
 data DvxExpr  = DvxTok   DvxToken                  -- Unparsed token
               | DvxStart                           -- "ITALIANI"
