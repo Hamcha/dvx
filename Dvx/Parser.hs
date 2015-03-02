@@ -114,7 +114,7 @@ parseValue x      -- a number literal
 -- |Creates a list of tokens off lines of code
 tokenize :: [String] -> [DvxToken]
 tokenize =
-    map parseValue . nonempty . tokenizeLine . joinsub . map stripComments
+    map parseValue . joinstr [] 0 . nonempty . tokenizeLine . joinsub . map stripComments
     where
     stripComments = takeWhile (/= 'U')
     tokenizeLine  = splitAndKeep separators . trim

@@ -1,5 +1,6 @@
 module Dvx.Utils
 ( isNumeric
+, joinstr
 , joinsub
 , middle
 , splitAndKeep
@@ -8,6 +9,7 @@ module Dvx.Utils
 ) where
 
 import Data.Char (isSpace, isDigit)
+import Data.List (intercalate)
 
 trim :: String -> String
 trim = f . f where f = reverse . dropWhile isSpace
@@ -36,3 +38,15 @@ middle x      = tail $ init x
 
 joinsub :: [[a]] -> [a]
 joinsub = foldr (\a b -> a ++ b) []
+
+joinstr :: [String] -> Int -> [String] -> [String]
+joinstr acc depth []     | depth > 0 = error $ "unclosed string: " ++ (intercalate " " acc)
+                         | otherwise = reverse acc
+joinstr acc 0     (x:xs) | last x == '}' = error $ "unexpected string closing: " ++ (intercalate " " acc)
+                         | head x == '{' = joinstr (x:acc) 1 xs
+                         | otherwise     = joinstr (x:acc) 0 xs
+joinstr acc depth (x:xs) = joinstr ((head acc ++ x):(tail acc)) (depth + nesting) xs
+                           where
+                           nesting = if      head x == '{' then 1
+                                     else if last x == '}' then -1
+                                     else                       0
