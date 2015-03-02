@@ -15,8 +15,8 @@ executeExpr :: [Context] -> DvxExpr -> IO (DvxValue, [Context])
 executeExpr c DvxStart          = return (TypeNil, c)
 executeExpr c (DvxDecl name v)  = setVar c name v
 executeExpr c (DvxCall fn args) = resolve c args
-								  >>= \var -> apply (getVar c fn) var
-								  >>= \x -> return (x, c)
+                                  >>= \var -> apply (getVar c fn) var
+                                  >>= \x -> return (x, c)
 executeExpr _ x                 = error $ "Can't execute expression: " ++ show x
 
 getVar :: [Context] -> String -> DvxValue
@@ -28,7 +28,7 @@ getVar (c:cs) str =
 
 setVar :: [Context] -> String -> DvxExpr -> IO (DvxValue, [Context])
 setVar c str expr = resolveValue c expr
-					>>= \value -> return (value, ((str, value) : head c) : tail c)
+                    >>= \value -> return (value, ((str, value) : head c) : tail c)
 
 apply :: DvxValue -> [DvxValue] -> IO DvxValue
 apply (TypeFun f) args = f args
@@ -37,8 +37,8 @@ apply _           _    = return TypeNil
 resolve :: [Context] -> [DvxExpr] -> IO [DvxValue]
 resolve _ []     = return []
 resolve c (x:xs) = resolveValue c x
-				   >>= \val -> resolve c xs
-				   >>= \list -> return $ val:list
+                   >>= \val -> resolve c xs
+                   >>= \list -> return $ val:list
 
 resolveValue :: [Context] -> DvxExpr -> IO DvxValue
 resolveValue _ (DvxConst x)      = return x
