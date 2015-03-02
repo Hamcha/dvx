@@ -1,6 +1,6 @@
 #!/bin/sh
 
-if [ ! -f ./dvx ]; then
+if [ ! -f dist/build/dvx/dvx ]; then
 	echo "dvx binary not found. Have you compiled it?"
 	exit 1
 fi
@@ -8,7 +8,7 @@ fi
 SUCC=0
 ERR=0
 for FILE in $(ls tests); do
-	./dvx tests/$FILE
+	dist/build/dvx/dvx tests/$FILE
 	if [[ $? = 0 ]]; then
 		echo "- $FILE OK"
 		SUCC=$((SUCC+1))
