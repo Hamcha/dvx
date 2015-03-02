@@ -9,20 +9,20 @@
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
-| :white_check_mark:       | hello.dvx   | -                                   |
 | :heavy_exclamation_mark: | mulstr.dvx  | Multiword string parsed incorrectly |
+| :white_check_mark:       | hello.dvx   | -                                   |
+| :white_check_mark:       | short.dvx   | -                                   |
 | :white_check_mark:       | test.dvx    | -                                   |
 | :white_check_mark:       | test2.dvx   | -                                   |
-| :white_check_mark:       | short.dvx   | -                                   |
 
 #### Interpreter status
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
 | :white_check_mark:       | hello.dvx   | -                                   |
-| :warning:                | test.dvx    | Var decls doesn't work, no output   |
+| :heavy_exclamation_mark: | short.dvx   | Var decls doesn't work, eval error  |
+| :heavy_exclamation_mark: | test.dvx    | Var decls doesn't work, eval error  |
 | :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, resolve err  |
-| :warning:                | short.dvx   | Var decls doesn't work, no output   |
 
 ## Todo
 

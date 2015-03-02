@@ -12,8 +12,9 @@ execute _ []     = return ()
 execute c (x:xs) = executeExpr c x >>= \cx -> execute (snd cx) xs
 
 executeExpr :: [Context] -> DvxExpr -> IO (DvxValue, [Context])
+executeExpr c DvxStart          = return (TypeNil, c)
 executeExpr c (DvxCall fn args) = apply (getVar c fn) (resolve c args) >>= \x -> return (x, c)
-executeExpr c _                 = return (TypeNil, c)
+executeExpr _ x                 = error $ "Can't execute expression: " ++ show x
 
 getVar :: [Context] -> String -> DvxValue
 getVar []     str = error $ "Undefined value: " ++ str
