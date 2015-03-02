@@ -10,7 +10,7 @@ import Dvx.Tokens
 import Dvx.Romans
 import Dvx.Utils
 
-type Function = [DvxExpr] -> IO DvxValue
+type Function = [DvxValue] -> IO DvxValue
 
 data DvxValue = TypeNil
               | TypeInt Int

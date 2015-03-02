@@ -16,9 +16,15 @@
 
 #### Interpreter status
 
-Doesn't work yet
+| :ok:                     | Test file   | Notes                               |
+|:------------------------:|-------------|-------------------------------------|
+| :white_check_mark:       | hello.dvx   | -                                   |
+| :information_source:     | test.dvx    | Var decls doesn't work, no output   |
+| :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, resolve err  |
+| :information_source:     | short.dvx   | Var decls doesn't work, no output   |
 
 ## Todo
 
 - Basic interpreter (0.0.3)
+- More tests (Recursion, Shadowing, ..)
 - Compiler? (LLVM-based, probably)
