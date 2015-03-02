@@ -20,9 +20,9 @@
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
 | :white_check_mark:       | hello.dvx   | -                                   |
-| :heavy_exclamation_mark: | short.dvx   | Var decls doesn't work, eval error  |
-| :heavy_exclamation_mark: | test.dvx    | Var decls doesn't work, eval error  |
-| :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, resolve err  |
+| :white_check_mark:       | short.dvx   | -                                   |
+| :white_check_mark:       | test.dvx    | -                                   |
+| :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, eval error   |
 
 ## Todo
 
