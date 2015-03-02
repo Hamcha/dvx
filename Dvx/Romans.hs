@@ -30,7 +30,7 @@ rtod n      =
     where
     rsum :: [Int] -> Int -> Int
     rsum []     _                = 0
-    rsum (x:xs) maxN | x > maxN  = x + rsum xs x
+    rsum (x:xs) maxN | x >= maxN  = x + rsum xs x
                      | otherwise = rsum xs maxN - x
     rconv 'M' = 1000
     rconv 'D' = 500
