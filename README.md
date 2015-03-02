@@ -19,9 +19,9 @@
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
 | :white_check_mark:       | hello.dvx   | -                                   |
-| :information_source:     | test.dvx    | Var decls doesn't work, no output   |
+| :warning:                | test.dvx    | Var decls doesn't work, no output   |
 | :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, resolve err  |
-| :information_source:     | short.dvx   | Var decls doesn't work, no output   |
+| :warning:                | short.dvx   | Var decls doesn't work, no output   |
 
 ## Todo
 
