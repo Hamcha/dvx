@@ -1,5 +1,6 @@
 module Dvx.Interpreter
-( execute
+( Context
+, execute
 ) where
 
 import Dvx.Parser

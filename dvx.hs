@@ -2,6 +2,7 @@ module Main where
 
 import Dvx.Parser
 import Dvx.Interpreter
+import Std
 import System.Environment
 import System.IO
 
@@ -9,8 +10,8 @@ data Flag = F_None | F_PrintAST
 
 -- TODO: Support multiple flags?
 process :: Flag -> [String] -> IO ()
-process F_PrintAST = print      . parse . tokenize
-process _          = execute [] . parse . tokenize
+process F_PrintAST = print                . parse . tokenize
+process _          = execute [stdContext] . parse . tokenize
 --process = print . parse . tokenize
 
 main :: IO ()

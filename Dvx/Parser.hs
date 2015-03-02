@@ -1,6 +1,7 @@
 module Dvx.Parser
 ( DvxExpr(..)
 , DvxValue(..)
+, Function
 , tokenize
 , parse
 ) where
