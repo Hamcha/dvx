@@ -9,8 +9,9 @@
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
-| :white_check_mark:       | mulstr.dvx  | -                                   |
 | :white_check_mark:       | hello.dvx   | -                                   |
+| :white_check_mark:       | mulstr.dvx  | -                                   |
+| :white_check_mark:       | nested.dvx  | -                                   |
 | :white_check_mark:       | short.dvx   | -                                   |
 | :white_check_mark:       | test.dvx    | -                                   |
 | :white_check_mark:       | test2.dvx   | -                                   |
@@ -19,8 +20,9 @@
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
-| :white_check_mark:       | mulstr.dvx  | -                                   |
 | :white_check_mark:       | hello.dvx   | -                                   |
+| :white_check_mark:       | mulstr.dvx  | -                                   |
+| :white_check_mark:       | nested.dvx  | -                                   |
 | :white_check_mark:       | short.dvx   | -                                   |
 | :white_check_mark:       | test.dvx    | -                                   |
 | :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, eval error   |
