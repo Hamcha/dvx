@@ -9,7 +9,8 @@
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
-| :heavy_exclamation_mark: | hello.dvx   | Multiword string parsed incorrectly |
+| :white_check_mark:       | hello.dvx   | -                                   |
+| :heavy_exclamation_mark: | mulstr.dvx  | Multiword string parsed incorrectly |
 | :white_check_mark:       | test.dvx    | -                                   |
 | :white_check_mark:       | test2.dvx   | -                                   |
 | :white_check_mark:       | short.dvx   | -                                   |
