@@ -40,11 +40,11 @@ joinsub :: [[a]] -> [a]
 joinsub = foldr (\a b -> a ++ b) []
 
 joinstr :: [String] -> Int -> [String] -> [String]
-joinstr acc depth []     | depth > 0 = error $ "unclosed string: " ++ (intercalate " " acc)
+joinstr acc depth []     | depth > 0 = error $ "unclosed string: " ++ (intercalate [] $ reverse acc)
                          | otherwise = reverse acc
 joinstr acc 0     (x:xs) | last x == '}' = if head x == '{'
                                                then joinstr (x:acc) 0 xs
-                                               else error $ "unexpected string closing: " ++ (intercalate " " acc)
+                                               else error $ "unexpected string closing: " ++ (intercalate [] $ reverse acc)
                          | head x == '{' = joinstr (x:acc) 1 xs
                          | otherwise     = joinstr (x:acc) 0 xs
 joinstr acc depth (x:xs) = joinstr ((head acc ++ x):(tail acc)) (depth + nesting) xs
