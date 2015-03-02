@@ -9,7 +9,7 @@
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
-| :heavy_exclamation_mark: | mulstr.dvx  | Multiword string parsed incorrectly |
+| :white_check_mark:       | mulstr.dvx  | -                                   |
 | :white_check_mark:       | hello.dvx   | -                                   |
 | :white_check_mark:       | short.dvx   | -                                   |
 | :white_check_mark:       | test.dvx    | -                                   |
@@ -19,6 +19,7 @@
 
 | :ok:                     | Test file   | Notes                               |
 |:------------------------:|-------------|-------------------------------------|
+| :white_check_mark:       | mulstr.dvx  | -                                   |
 | :white_check_mark:       | hello.dvx   | -                                   |
 | :white_check_mark:       | short.dvx   | -                                   |
 | :white_check_mark:       | test.dvx    | -                                   |
