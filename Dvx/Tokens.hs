@@ -33,5 +33,6 @@ token "NOMINO"    = TDefVar
 token "COME"      = TVarValue
 token "DI"        = TNullCall
 token "\9500\234" = TNullCall  -- È
+token "È"         = TNullCall  -- È
 token "OVE"       = TDefnArgs
 token x           = TName x
