@@ -3,23 +3,52 @@
 
 @package main
 
+
 module Dvx.Utils
+
+-- | Trim whitespace from a string
 trim :: String -> String
+
+-- | Split a list of lists based on a single item separator
 splitOn :: Eq a => a -> [a] -> [[a]]
+
+-- | Split a string based on multiple separators while keeping them as
+--   items
 splitAndKeep :: String -> String -> [String]
+
+-- | Check if a string is an integer
 isNumeric :: String -> Bool
+
+-- | Take out the first and last character of a string
 middle :: String -> String
+
+-- | Merge a list of lists into a single list
 joinsub :: [[a]] -> [a]
+
+-- | Create string tokens from a list of strings This is a workaround to a
+--   design fault in our tokenizer
 joinstr :: [String] -> Int -> [String] -> [String]
+
+-- | 1 if given True, 0 if given False
 boolToInt :: Bool -> Int
 
+
 module Dvx.Romans
+
+-- | All roman numerals tokens
 romanLetters :: String
+
+-- | Converts an integer to its roman numeral representation
 dtor :: Int -> String
+
+-- | Converts a roman numeral to its integer value |Throws an error if the
+--   given numeral is not valid
 rtod :: String -> Int
-romanize :: [String] -> [String]
+
 
 module Dvx.Tokens
+
+-- | DVX Tokens (derived from code, used in AST building)
 data DvxToken
 TBool :: Bool -> DvxToken
 TColon :: DvxToken
@@ -42,6 +71,7 @@ TVarValue :: DvxToken
 token :: String -> DvxToken
 instance Eq DvxToken
 instance Show DvxToken
+
 
 module Dvx.Parser
 type Context = [(String, DvxValue)]
@@ -97,13 +127,13 @@ module Dvx.Interpreter
 execute :: [Context] -> [DvxExpr] -> IO ()
 
 -- | Executes a single expression, returning a value and updated context
---   Throws an error if the expression can't be evaluated
+--   |Throws an error if the expression can't be evaluated
 executeExpr :: [Context] -> DvxExpr -> IO (DvxValue, [Context])
 
 -- | Adds a value (variable, function def) to the head of a context chain
 appendContext :: [Context] -> String -> DvxValue -> [Context]
 
--- | Gets a variable from the context chain Throws an error if it can't
+-- | Gets a variable from the context chain |Throws an error if it can't
 --   find the variable
 getVar :: [Context] -> String -> DvxValue
 
@@ -120,12 +150,13 @@ bindArgs :: [String] -> [DvxValue] -> Context
 -- | Executes an expression where possible, otherwise returns nil
 apply :: [Context] -> DvxValue -> [DvxValue] -> IO DvxValue
 
--- | Retrieves a list of values from a list of expressions This is just a
+-- | Retrieves a list of values from a list of expressions |This is just a
 --   wrapper over resolveValue
 resolve :: [Context] -> [DvxExpr] -> IO [DvxValue]
 
--- | Retrieves a value from an expression Works by executing the expression
---   where possible or just looking around in the context chain.
+-- | Retrieves a value from an expression |Works by executing the
+--   expression where possible or just looking around in |the context
+--   chain.
 resolveValue :: [Context] -> DvxExpr -> IO DvxValue
 
 
@@ -146,11 +177,23 @@ stdLogic :: (Bool -> Bool -> Bool) -> Bool -> Function
 instance Eq (DvxComparable a)
 instance Ord (DvxComparable a)
 
+
 module Main
+
+-- | Command line flags
 data Flag
 F_None :: Flag
 F_PrintAST :: Flag
+
+-- | Processes the given list of lines depending on what flag is given
+--   |"-A" will print the AST instead of executing
 process :: Flag -> [String] -> IO ()
+
+-- | Entry point
 main :: IO ()
+
+-- | Parses command line flags
 parseFlags :: Flag -> [String] -> IO ()
+
+-- | Reads lines of code from stdin
 parseStdin :: Flag -> [String] -> Bool -> IO ()
