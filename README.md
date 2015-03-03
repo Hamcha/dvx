@@ -36,7 +36,7 @@
 
 ## Documentation
 
-Just run `sh gendocs.sh`
+[Here it is!](https://hamcha.github.io/dvx/docs/)
 
 Current status (as of last README edit):
 ```
