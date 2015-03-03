@@ -25,10 +25,9 @@
 | :white_check_mark:       | nested.dvx  | -                                   |
 | :white_check_mark:       | short.dvx   | -                                   |
 | :white_check_mark:       | test.dvx    | -                                   |
-| :heavy_exclamation_mark: | test2.dvx   | Func def doesn't work, eval error   |
+| :white_check_mark:       | test2.dvx   | -                                   |
 
 ## Todo
 
-- Basic interpreter (0.0.3)
 - More tests (Recursion, Shadowing, ..)
 - Compiler? (LLVM-based, probably)

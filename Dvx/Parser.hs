@@ -54,7 +54,7 @@ makeast (DvxTok TDefn
                           :_)
                  :_)
         :ys)
-        = DvxFunc name (getArgs args) (makeast expr !! 0) : makeast ys
+        = DvxFunc (trim name) (getArgs args) (makeast expr !! 0) : makeast ys
 -- Variable declaration
 makeast (DvxTok TDefVar
         :DvxList (DvxTok value
@@ -63,7 +63,7 @@ makeast (DvxTok TDefVar
                           :_)
                  :_)
         :ys)
-        = DvxDecl name (discover value) : makeast ys
+        = DvxDecl (trim name) (discover value) : makeast ys
 -- Nullcall (È, DI etc.)
 makeast (DvxTok TNullCall  :xs) = makeast xs
 -- Function call
