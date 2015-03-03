@@ -1,13 +1,18 @@
+{-|
+Module      : Dvx.Romans
+Description : Roman numeral integration module
+-}
 module Dvx.Romans
 ( dtor
-, romanize
 , romanLetters
 , rtod
 ) where
 
+-- |All roman numerals tokens
 romanLetters :: String
 romanLetters = "MDCLXVI"
 
+-- |Converts an integer to its roman numeral representation
 dtor :: Int -> String
 dtor 0 = ""
 dtor n | n >= 1000  = 'M' : (dtor $ n - 1000)
@@ -22,6 +27,8 @@ dtor n | n >= 1000  = 'M' : (dtor $ n - 1000)
        t = n `div` 10
        ones = ["", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX"]
 
+-- |Converts a roman numeral to its integer value
+-- |Throws an error if the given numeral is not valid
 rtod :: String -> Int
 rtod ""     = 0
 rtod "ZERO" = 0
@@ -40,9 +47,3 @@ rtod n      =
     rconv 'V' = 5
     rconv 'I' = 1
     rconv  x  = error $ "Invalid letter in roman number: " ++ [x]
-
-romanize :: [String] -> [String]
-romanize []     = []
-romanize (x:xs)
-    | all (`elem` romanLetters) x = (show $ rtod x) : (romanize xs)
-    | otherwise                   =  x : romanize xs

@@ -41,11 +41,11 @@
 Current status (as of last README edit):
 ```
 Haddock coverage:
-   0% (  0 /  9) in 'Dvx.Utils'
-   0% (  0 /  5) in 'Dvx.Romans'
-  33% (  1 /  3) in 'Dvx.Tokens'
-  47% (  7 / 15) in 'Dvx.Parser'
+ 100% (  9 /  9) in 'Dvx.Utils'
+ 100% (  4 /  4) in 'Dvx.Romans'
+ 100% (  3 /  3) in 'Dvx.Tokens'
+  53% (  8 / 15) in 'Dvx.Parser'
  100% ( 11 / 11) in 'Dvx.Interpreter'
   11% (  1 /  9) in 'Std'
-   0% (  0 /  6) in 'Main'
+ 100% (  6 /  6) in 'Main'
 ```

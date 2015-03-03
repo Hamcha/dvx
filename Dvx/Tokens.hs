@@ -1,8 +1,13 @@
+{-|
+Module      : Dvx.Tokens
+Description : DVX tokens
+-}
 module Dvx.Tokens
 ( token
 , DvxToken(..)
 ) where
 
+-- |DVX Tokens (derived from code, used in AST building)
 data DvxToken = TBool      Bool
               | TColon
               | TComma

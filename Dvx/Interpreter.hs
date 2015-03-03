@@ -17,7 +17,7 @@ execute _ []     = return ()
 execute c (x:xs) = executeExpr c x >>= \cx -> execute (snd cx) xs
 
 -- |Executes a single expression, returning a value and updated context
--- Throws an error if the expression can't be evaluated
+-- |Throws an error if the expression can't be evaluated
 executeExpr :: [Context] -- ^ Current context chain
             -> DvxExpr   -- ^ Expression to evaluate
             -> IO (DvxValue, [Context])
@@ -38,7 +38,7 @@ appendContext :: [Context] -- ^ Context to append value to
 appendContext c str value = ((str, value) : head c) : tail c
 
 -- |Gets a variable from the context chain
--- Throws an error if it can't find the variable
+-- |Throws an error if it can't find the variable
 getVar :: [Context] -- ^ Context chain to search variable from
        -> String    -- ^ Name to search for
        -> DvxValue  -- ^ Resulting value
@@ -81,7 +81,7 @@ apply c (TypeFun f) args = f c args
 apply _ _           _    = return TypeNil
 
 -- |Retrieves a list of values from a list of expressions
--- This is just a wrapper over resolveValue
+-- |This is just a wrapper over resolveValue
 resolve :: [Context]     -- ^ Context chain to resolve from
         -> [DvxExpr]     -- ^ Expressions to resolve
         -> IO [DvxValue] -- ^ Resolved values
@@ -91,8 +91,8 @@ resolve c (x:xs) = resolveValue c x
                    >>= \list -> return $ val:list
 
 -- |Retrieves a value from an expression
--- Works by executing the expression where possible or just looking around in
--- the context chain.
+-- |Works by executing the expression where possible or just looking around in
+-- |the context chain.
 resolveValue :: [Context]   -- ^ Context chain to resolve from
              -> DvxExpr     -- ^ Expression to resolve
              -> IO DvxValue -- ^ Resolved value

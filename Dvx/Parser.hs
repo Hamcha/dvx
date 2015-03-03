@@ -1,3 +1,7 @@
+{-|
+Module      : Dvx.Parser
+Description : AST parsing and tokenizing functions
+-}
 module Dvx.Parser
 ( Context
 , DvxExpr(..)
