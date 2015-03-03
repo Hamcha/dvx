@@ -5,29 +5,31 @@
 
 ## Current Status
 
-#### Parser status
+#### Test status
 
-| :ok:                     | Test file   | Notes                               |
-|:------------------------:|-------------|-------------------------------------|
-| :white_check_mark:       | hello.dvx   | -                                   |
-| :white_check_mark:       | mulstr.dvx  | -                                   |
-| :white_check_mark:       | nested.dvx  | -                                   |
-| :white_check_mark:       | short.dvx   | -                                   |
-| :white_check_mark:       | test.dvx    | -                                   |
-| :white_check_mark:       | test2.dvx   | -                                   |
+| :ok: | Test file | Notes |
+|:----:|-----------|-------|
+| :white_check_mark: | arith.dvx | - |
+| :white_check_mark: | cmp.dvx | - |
+| :white_check_mark: | hello.dvx | - |
+| :white_check_mark: | mulstr.dvx | - |
+| :white_check_mark: | nested.dvx | - |
+| :white_check_mark: | short.dvx | - |
+| :white_check_mark: | test.dvx | - |
+| :white_check_mark: | test2.dvx | - |
 
-#### Interpreter status
+#### What doesn't work
 
-| :ok:                     | Test file   | Notes                               |
-|:------------------------:|-------------|-------------------------------------|
-| :white_check_mark:       | hello.dvx   | -                                   |
-| :white_check_mark:       | mulstr.dvx  | -                                   |
-| :white_check_mark:       | nested.dvx  | -                                   |
-| :white_check_mark:       | short.dvx   | -                                   |
-| :white_check_mark:       | test.dvx    | -                                   |
-| :white_check_mark:       | test2.dvx   | -                                   |
+- Ifs (SE/ALLORA/SENNÒ)
+- Loops (X VOLTE RIPETO/FINCHE X)
+- Recursion
 
 ## Todo
 
+- Implement missing statements (IF/FOR/WHILE) (0.0.4)
+- Make recursion work (0.0.4/0.0.5)
 - More tests (Recursion, Shadowing, ..)
+
+## Long term goals
+
 - Compiler? (LLVM-based, probably)

@@ -1,4 +1,4 @@
--- |Dvx Standard Context 
+-- |Dvx Standard Context
 module Std
 ( stdContext
 ) where
@@ -7,7 +7,7 @@ import Dvx.Interpreter (Context)
 import Dvx.Parser
 import Dvx.Utils (boolToInt)
 
-data DvxComparable a = CompNil 
+data DvxComparable a = CompNil
                      | CompBool Bool
                      | CompInt  Int
                      | CompStr  String
@@ -64,7 +64,7 @@ stdCmpOrd f = return . TypeBool . func
               where
               func :: [DvxValue] -> Bool
               func (x:y:[]) = f (toComparable x) (toComparable y)
-              func _ = error "stdCmpOrd: invalid number of arguments" 
+              func _ = error "stdCmpOrd: invalid number of arguments"
 
 stdLogic :: (Bool -> Bool -> Bool) -> Bool -> Function
 stdLogic f dflt = return . TypeBool . func dflt
