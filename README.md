@@ -33,3 +33,19 @@
 ## Long term goals
 
 - Compiler? (LLVM-based, probably)
+
+## Documentation
+
+Just run `sh gendocs.sh`
+
+Current status (as of last README edit):
+```
+Haddock coverage:
+   0% (  0 /  9) in 'Dvx.Utils'
+   0% (  0 /  5) in 'Dvx.Romans'
+  33% (  1 /  3) in 'Dvx.Tokens'
+  47% (  7 / 15) in 'Dvx.Parser'
+ 100% ( 11 / 11) in 'Dvx.Interpreter'
+  11% (  1 /  9) in 'Std'
+   0% (  0 /  6) in 'Main'
+```
