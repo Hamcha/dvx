@@ -3,7 +3,8 @@ module Dvx.Tokens
 , DvxToken(..)
 ) where
 
-data DvxToken = TColon
+data DvxToken = TBool      Bool
+              | TColon
               | TComma
               | TDefn
               | TDefnArgs
@@ -11,6 +12,7 @@ data DvxToken = TColon
               | TNullCall
               | TPeriod
               | TName      String
+              | TNil
               | TNumber    Int
               | TPrelude
               | TSemicolon
@@ -35,4 +37,7 @@ token "DI"        = TNullCall
 token "\9500\234" = TNullCall  -- È
 token "È"         = TNullCall  -- È
 token "OVE"       = TDefnArgs
+token "VERO"      = TBool True
+token "FALSO"     = TBool False
+token "NIENTE"    = TNil
 token x           = TName x

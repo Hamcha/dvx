@@ -1,5 +1,6 @@
 module Dvx.Utils
-( isNumeric
+( boolToInt
+, isNumeric
 , joinstr
 , joinsub
 , middle
@@ -52,3 +53,7 @@ joinstr acc depth (x:xs) =
     nesting c | head c == '{' =  1
               | last c == '}' = -1
               | otherwise     =  0
+
+boolToInt :: Bool -> Int
+boolToInt True  = 1
+boolToInt False = 0

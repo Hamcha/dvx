@@ -13,16 +13,18 @@ import Dvx.Utils
 type Function = [DvxValue] -> IO DvxValue
 
 data DvxValue = TypeNil
-              | TypeInt Int
-              | TypeStr String
-              | TypeFun Function
-              | TypeLst [DvxValue]
+              | TypeBool Bool
+              | TypeInt  Int
+              | TypeStr  String
+              | TypeFun  Function
+              | TypeLst  [DvxValue]
 
 instance Show DvxValue where
-    show (TypeInt x) = "Int " ++ show x
-    show (TypeStr x) = "Str " ++ show x
-    show (TypeLst x) = "Lst " ++ show x
-    show (TypeFun _) = "Function <Function>"
+    show (TypeBool x) = "Bool " ++ show x
+    show (TypeInt x)  = "Int "  ++ show x
+    show (TypeStr x)  = "Str "  ++ show x
+    show (TypeLst x)  = "Lst "  ++ show x
+    show (TypeFun _)  = "Function <Function>"
 
 data DvxExpr  = DvxTok   DvxToken                  -- Unparsed token
               | DvxStart                           -- "ITALIANI"
@@ -74,8 +76,10 @@ makeast (DvxTok  x:xs) = (discover x) : makeast xs
 -- |Parses plain tokens (DvxTok) into something meaningful
 discover :: DvxToken -> DvxExpr
 discover TPrelude    = DvxStart
-discover (TNumber n) = DvxConst $ TypeInt n
-discover (TString s) = DvxConst $ TypeStr s
+discover (TNumber n) = DvxConst $ TypeInt  n
+discover (TString s) = DvxConst $ TypeStr  s
+discover (TBool   b) = DvxConst $ TypeBool b
+discover (TNil)      = DvxConst $ TypeNil
 discover (TName   n) = DvxVar n
 discover x = DvxTok x
 
