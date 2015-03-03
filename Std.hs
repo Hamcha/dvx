@@ -64,7 +64,7 @@ stdCmpOrd f = return . TypeBool . func
               where
               func :: [DvxValue] -> Bool
               func (x:y:[]) = f (toComparable x) (toComparable y)
-              func _ = error "stdCmdOrd: too many arguments"
+              func _ = error "stdCmpOrd: invalid number of arguments" 
 
 stdLogic :: (Bool -> Bool -> Bool) -> Bool -> Function
 stdLogic f dflt = return . TypeBool . func dflt
