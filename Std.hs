@@ -3,6 +3,7 @@ module Std
 ( stdContext
 ) where
 
+import Dvx.Interpreter (setVar)
 import Dvx.Parser
 
 data DvxComparable a = CompNil
@@ -19,7 +20,9 @@ toComparable TypeNil      = CompNil
 toComparable x            = error $ show x ++ " is not comparable."
 
 stdContext :: Context
-stdContext = [("SCRIVO"  , TypeFun stdPrint)
+stdContext = [("DICO"    , TypeFun stdPrint)
+             ,("ANNVNCIO", TypeFun stdPrint)
+             ,("DIMMI"   , TypeFun stdRead)
              ,("ACCAPO"  , TypeStr "\n")
              ,("PIV"     , TypeFun $ stdArith (+) 0)
              ,("MENO"    , TypeFun $ stdArith (-) 0)
@@ -40,6 +43,14 @@ stdPrint _ ((TypeInt i) :r) = do putStr $ show i; stdPrint [] r
 stdPrint _ ((TypeBool b):r) = do print b;         stdPrint [] r
 stdPrint _ ((TypeNil  ) :r) = do putStr "null";   stdPrint [] r
 stdPrint _ (x           :r) = do print x;         stdPrint [] r
+
+stdRead :: Function
+stdRead c [] = return TypeNil
+stdRead c ((TypeStr x):xs) = do val <- getLine
+                                res <- setVar c x $ DvxConst $ TypeStr val
+                                stdRead (snd res) xs
+stdRead _ _ = error "stdRead: invalid operands"
+
 
 stdArith :: (Int -> Int -> Int) -> Int -> Function
 stdArith f neuter _ = return . TypeInt . func neuter

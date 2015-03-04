@@ -15,6 +15,7 @@
 | :white_check_mark: | if.dvx | - |
 | :white_check_mark: | mulstr.dvx | - |
 | :white_check_mark: | nested.dvx | - |
+| :heavy_exclamation_mark: | read.dvx | (doesn't update the variable) |
 | :white_check_mark: | recursive.dvx | - |
 | :white_check_mark: | short.dvx | - |
 | :white_check_mark: | test2.dvx | - |
@@ -23,12 +24,14 @@
 #### What doesn't work
 
 - Loops (X VOLTE RIPETO/FINCHE X)
+- Reading from stdin (because variables are immutable)
 
 ## Todo
 
 - Implement missing statements (FOR/WHILE) (0.0.4)
 - Make recursion work (0.0.4/0.0.5)
 - More tests (Recursion, Shadowing, ..)
+- Implement functions side effects
 
 ## Long term goals
 

@@ -5,6 +5,7 @@ Description : DVX Interpreter functions
 module Dvx.Interpreter
 ( execute
 , getVar
+, setVar
 ) where
 
 import Dvx.Parser

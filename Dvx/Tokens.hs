@@ -14,19 +14,20 @@ data DvxToken = TBool      Bool
               | TDefn
               | TDefnArgs
               | TDefVar
-              | TNullCall
-              | TPeriod
+              | TElse
+              | TIf
               | TName      String
               | TNil
+              | TNullCall
               | TNumber    Int
+              | TPeriod
               | TPrelude
               | TSemicolon
               | TSpace
               | TString    String
-              | TVarValue
-              | TIf
               | TThen
-              | TElse
+              | TVarValue
+              | TWhile
               deriving (Eq, Show)
 
 -- |Keywords definition
@@ -52,4 +53,5 @@ token "SE"         = TIf
 token "ALLORA"     = TThen
 token "SENNÒ"      = TElse
 token "ALTRIMENTI" = TElse
+token "FINCHÉ"     = TWhile
 token x            = TName x
