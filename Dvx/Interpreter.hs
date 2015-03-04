@@ -33,6 +33,7 @@ executeExpr c (DvxIf cond yes no)     = executeExpr c cond
                                                     TypeBool True  -> executeExpr c yes
                                                     TypeBool False -> executeExpr c no
                                                     _              -> error "TODO - toConditional"
+executeExpr c (DvxConst val)          = return (val, c)
 executeExpr _ x                       = error $ "Can't execute expression: " ++ show x
 
 -- |Adds a value (variable, function def) to the head of a context chain
@@ -56,7 +57,7 @@ getVar (c:cs) str =
 -- |Sets a variable in the context chain
 setVar :: [Context] -- ^ Context chain to add variable to
        -> String    -- ^ Name of the variable to add
-       -> DvxExpr   -- ^ Expresion of the variable to add (resolved in place)
+       -> DvxExpr   -- ^ Expression of the variable to add (resolved in place)
        -> IO (DvxValue, [Context])
 setVar c str expr = resolveValue c expr
                     >>= \value -> return (value, appendContext c str value)

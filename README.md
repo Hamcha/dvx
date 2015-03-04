@@ -15,7 +15,7 @@
 | :white_check_mark: | if.dvx | - |
 | :white_check_mark: | mulstr.dvx | - |
 | :white_check_mark: | nested.dvx | - |
-| :heavy_exclamation_mark: | recursive.dvx | dvx: Undefined value: IL'FATTORIALE |
+| :white_check_mark: | recursive.dvx | - |
 | :white_check_mark: | short.dvx | - |
 | :white_check_mark: | test2.dvx | - |
 | :white_check_mark: | test.dvx | - |
@@ -23,11 +23,10 @@
 #### What doesn't work
 
 - Loops (X VOLTE RIPETO/FINCHE X)
-- Recursion
 
 ## Todo
 
-- Implement missing statements (IF/FOR/WHILE) (0.0.4)
+- Implement missing statements (FOR/WHILE) (0.0.4)
 - Make recursion work (0.0.4/0.0.5)
 - More tests (Recursion, Shadowing, ..)
 
