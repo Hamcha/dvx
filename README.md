@@ -12,15 +12,16 @@
 | :white_check_mark: | arith.dvx | - |
 | :white_check_mark: | cmp.dvx | - |
 | :white_check_mark: | hello.dvx | - |
+| :white_check_mark: | if.dvx | - |
 | :white_check_mark: | mulstr.dvx | - |
 | :white_check_mark: | nested.dvx | - |
+| :heavy_exclamation_mark: | recursive.dvx | dvx: Undefined value: IL'FATTORIALE |
 | :white_check_mark: | short.dvx | - |
-| :white_check_mark: | test.dvx | - |
 | :white_check_mark: | test2.dvx | - |
+| :white_check_mark: | test.dvx | - |
 
 #### What doesn't work
 
-- Ifs (SE/ALLORA/SENNÒ)
 - Loops (X VOLTE RIPETO/FINCHE X)
 - Recursion
 

@@ -11,7 +11,7 @@ echo -e "|:----:|-----------|-------|"
 SUCC=0
 ERR=0
 for FILE in $(ls tests); do
-    RESULT=$(dist/build/dvx/dvx tests/$FILE)
+    RESULT=$(dist/build/dvx/dvx tests/$FILE 2>&1)
     if [[ $? = 0 ]]; then
         echo -e  "| :white_check_mark: | $FILE | - |"
         SUCC=$((SUCC+1))

@@ -28,7 +28,12 @@ executeExpr c (DvxCall fn args)       = resolve c args
                                         >>= \x -> return (x, c)
 executeExpr c (DvxFunc name arg body) = return (f, appendContext c name f)
                                         where f = TypeFun $ makeFunction arg body
-executeExpr _ x                 = error $ "Can't execute expression: " ++ show x
+executeExpr c (DvxIf cond yes no)     = executeExpr c cond
+                                        >>= \v-> case fst v of
+                                                    TypeBool True  -> executeExpr c yes
+                                                    TypeBool False -> executeExpr c no
+                                                    _              -> error "TODO - toConditional"
+executeExpr _ x                       = error $ "Can't execute expression: " ++ show x
 
 -- |Adds a value (variable, function def) to the head of a context chain
 appendContext :: [Context] -- ^ Context to append value to

@@ -32,14 +32,16 @@ instance Show DvxValue where
     show (TypeLst x)  = "Lst "  ++ show x
     show (TypeFun _)  = "Function <Function>"
 
-data DvxExpr  = DvxTok   DvxToken                  -- Unparsed token
-              | DvxStart                           -- "ITALIANI"
-              | DvxConst DvxValue                  -- Constant
-              | DvxVar   String                    -- Variable
-              | DvxCall  String [DvxExpr]          -- Function call
-              | DvxFunc  String [String] DvxExpr   -- Function definition
-              | DvxDecl  String DvxExpr            -- Variable declaration
-              | DvxList  [DvxExpr]                 -- List
+-- | AST expression
+data DvxExpr  = DvxTok   DvxToken                  -- ^ Unparsed token
+              | DvxStart                           -- ^ "ITALIANI"
+              | DvxConst DvxValue                  -- ^ Constant
+              | DvxVar   String                    -- ^ Variable
+              | DvxCall  String [DvxExpr]          -- ^ Function call
+              | DvxFunc  String [String] DvxExpr   -- ^ Function definition
+              | DvxIf    DvxExpr DvxExpr DvxExpr   -- ^ If/then/else
+              | DvxDecl  String DvxExpr            -- ^ Variable declaration
+              | DvxList  [DvxExpr]                 -- ^ List
               deriving Show
 
 separators :: String
@@ -51,6 +53,24 @@ parse = joinsub . map (makeast . foldr parseTokens []) . splitOn TPeriod
 -- |Makes a fully parsed AST off a raw tree
 makeast :: [DvxExpr] -> [DvxExpr]
 makeast [] = []
+-- Conditional branching
+makeast (DvxTok TIf
+        :DvxList (iftok
+                 :iflist
+                 :DvxList (DvxTok TThen
+                          :DvxList (iftruetok
+                                   :iftruelist
+                                   :DvxList (DvxTok TElse
+                                            :DvxList iffalse
+                                            :_)
+                                   :_)
+                          :_)
+                 :_)
+        :ys)
+        = DvxIf (makeast [iftok,iflist] !! 0)
+                (makeast [iftruetok, iftruelist] !! 0)
+                (makeast iffalse !! 0)
+          : makeast ys
 -- Function definition
 makeast (DvxTok TDefn
         :DvxList (DvxTok (TName name)
