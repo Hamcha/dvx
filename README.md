@@ -29,7 +29,6 @@
 ## Todo
 
 - Implement missing statements (FOR/WHILE) (0.0.4)
-- Make recursion work (0.0.4/0.0.5)
 - More tests (Recursion, Shadowing, ..)
 - Implement functions side effects
 
