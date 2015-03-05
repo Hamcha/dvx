@@ -21,12 +21,11 @@ execute c (x:xs) = executeExpr c x >>= \cx -> execute (snd cx) xs
 -- |Throws an error if the expression can't be evaluated
 executeExpr :: [Context] -- ^ Current context chain
             -> DvxExpr   -- ^ Expression to evaluate
-            -> IO (DvxValue, [Context])
+            -> IO DvxResult
 executeExpr c DvxStart                = return (TypeNil, c)
 executeExpr c (DvxDecl name value)    = setVar c name value
 executeExpr c (DvxCall fn args)       = resolve c args
                                         >>= \var -> apply c (getVar c fn) var
-                                        >>= \x -> return (x, c)
 executeExpr c (DvxFunc name arg body) = return (f, appendContext c name f)
                                         where f = TypeFun $ makeFunction arg body
 executeExpr c (DvxIf cond yes no)     = executeExpr c cond
@@ -67,7 +66,7 @@ setVar c str expr = resolveValue c expr
 makeFunction :: [String] -- ^ Argument list
              -> DvxExpr  -- ^ Expression body
              -> Function -- ^ Resulting function
-makeFunction args body c fargs = return . fst =<< executeExpr (ctx:c) body
+makeFunction args body c fargs = executeExpr (ctx:c) body
                                  where ctx = bindArgs args fargs
 
 -- |Creates a function context based from a list of arguments and their values
@@ -80,12 +79,12 @@ bindArgs _      []     = error "Argument count mismatch (too few)"
 bindArgs (a:ax) (v:vx) = (a, v) : bindArgs ax vx
 
 -- |Executes an expression where possible, otherwise returns nil
-apply :: [Context]   -- ^ Context chain
-      -> DvxValue    -- ^ Function resolved from the expression
-      -> [DvxValue]  -- ^ List of arguments applied to the function
-      -> IO DvxValue -- ^ Function's return value
+apply :: [Context]    -- ^ Context chain
+      -> DvxValue     -- ^ Function resolved from the expression
+      -> [DvxValue]   -- ^ List of arguments applied to the function
+      -> IO DvxResult -- ^ Function's return value
 apply c (TypeFun f) args = f c args
-apply _ _           _    = return TypeNil
+apply c _           _    = return (TypeNil, c)
 
 -- |Retrieves a list of values from a list of expressions
 -- |This is just a wrapper over resolveValue

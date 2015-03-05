@@ -6,6 +6,7 @@ module Dvx.Parser
 ( Context
 , DvxExpr(..)
 , DvxValue(..)
+, DvxResult
 , Function
 , tokenize
 , parse
@@ -16,7 +17,8 @@ import Dvx.Romans
 import Dvx.Utils
 
 type Context = [(String, DvxValue)]
-type Function = [Context] -> [DvxValue] -> IO DvxValue
+type DvxResult = (DvxValue, [Context])
+type Function = [Context] -> [DvxValue] -> IO DvxResult
 
 data DvxValue = TypeNil
               | TypeBool Bool
