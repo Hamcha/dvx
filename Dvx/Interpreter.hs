@@ -3,7 +3,8 @@ Module      : Dvx.Interpreter
 Description : DVX Interpreter functions
 -}
 module Dvx.Interpreter
-( execute
+( coerceToBool
+, execute
 , getVar
 , setVar
 ) where
@@ -29,7 +30,7 @@ executeExpr c (DvxCall fn args)       = resolve c args
 executeExpr c (DvxFunc name arg body) = return (f, appendContext c name f)
                                         where f = TypeFun $ makeFunction arg body
 executeExpr c (DvxIf cond yes no)     = executeExpr c cond
-                                        >>= \v-> case fst v of
+                                        >>= \v-> case coerceToBool $ fst v of
                                                     TypeBool True  -> executeExpr c yes
                                                     TypeBool False -> executeExpr c no
                                                     _              -> error "TODO - toConditional"
@@ -106,3 +107,11 @@ resolveValue _ (DvxConst x)      = return x
 resolveValue c (DvxVar s)        = return $ getVar c s
 resolveValue c (DvxCall fn args) = return . fst =<< executeExpr c (DvxCall fn args)
 resolveValue _ v                 = error $ "Can't resolve " ++ show v
+
+coerceToBool :: DvxValue -> DvxValue
+coerceToBool (TypeNil   ) = TypeBool False
+coerceToBool (TypeBool a) = TypeBool a
+coerceToBool (TypeInt  n) = TypeBool $ n /= 0
+coerceToBool (TypeStr  s) = TypeBool $ (length s) > 0
+coerceToBool (TypeLst  l) = TypeBool $ (length l) > 0
+coerceToBool (TypeFun  f) = TypeBool True

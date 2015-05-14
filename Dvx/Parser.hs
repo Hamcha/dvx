@@ -28,6 +28,7 @@ data DvxValue = TypeNil
               | TypeLst  [DvxValue]
 
 instance Show DvxValue where
+    show (TypeNil)    = "Nil"
     show (TypeBool x) = "Bool " ++ show x
     show (TypeInt x)  = "Int "  ++ show x
     show (TypeStr x)  = "Str "  ++ show x
@@ -94,6 +95,8 @@ makeast (DvxTok TDefVar
         = DvxDecl (trim name) (discover value) : makeast ys
 -- Nullcall (È, DI etc.)
 makeast (DvxTok TNullCall  :xs) = makeast xs
+-- Function call (no args)
+makeast (DvxTok (TName x):DvxList [DvxTok TIgnore]:ys) = DvxCall x [] : makeast ys
 -- Function call
 makeast (DvxTok (TName x):DvxList y:ys) = DvxCall x (makeast y) : makeast ys
 -- List of list
@@ -114,6 +117,7 @@ discover x = DvxTok x
 -- |Gets a list of strings from a function declaration argument DvxList
 getArgs :: [DvxExpr] -> [String]
 getArgs []                    = []
+getArgs (DvxTok TIgnore:xs)   = [] : getArgs xs
 getArgs (DvxTok (TName x):xs) = x : getArgs xs
 getArgs _                     = error "Invalid token in function declaration arguments"
 

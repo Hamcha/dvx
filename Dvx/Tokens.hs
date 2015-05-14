@@ -16,6 +16,7 @@ data DvxToken = TBool      Bool
               | TDefVar
               | TElse
               | TIf
+              | TIgnore
               | TName      String
               | TNil
               | TNullCall
@@ -38,6 +39,7 @@ token "!"          = TPeriod
 token "."          = TPeriod
 token ":"          = TColon
 token ";"          = TSemicolon
+token "_"          = TIgnore
 token "ITALIANI"   = TPrelude
 token "DEFINENDO"  = TDefn
 token "NOMINO"     = TDefVar

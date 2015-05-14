@@ -3,7 +3,7 @@ module Std
 ( stdContext
 ) where
 
-import Dvx.Interpreter (setVar)
+import Dvx.Interpreter (setVar, coerceToBool)
 import Dvx.Parser
 
 data DvxComparable a = CompNil
@@ -20,20 +20,21 @@ toComparable TypeNil      = CompNil
 toComparable x            = error $ show x ++ " is not comparable."
 
 stdContext :: Context
-stdContext = [("DICO"    , TypeFun $ noContext stdPrint)
-             ,("ANNVNCIO", TypeFun $ noContext stdPrint)
-             ,("DIMMI"   , TypeFun stdRead)
-             ,("ACCAPO"  , TypeStr "\n")
-             ,("PIV"     , TypeFun $ noContext $ stdArith (+) 0)
-             ,("MENO"    , TypeFun $ noContext $ stdArith (-) 0)
-             ,("PER"     , TypeFun $ noContext $ stdArith (*) 1)
-             ,("DIVISO"  , TypeFun $ noContext $ stdArith div 1)
-             ,("MAGGIORE", TypeFun $ noContext $ stdCmpOrd (>))
-             ,("MINORE"  , TypeFun $ noContext $ stdCmpOrd (<))
-             ,("VGVALE"  , TypeFun $ noContext $ stdCmpEq (==))
-             ,("DIVERSO" , TypeFun $ noContext $ stdCmpEq (/=))
-             ,("QVALCVNO", TypeFun $ noContext $ stdLogic (||) False)
-             ,("TVTTI"   , TypeFun $ noContext $ stdLogic (&&) True)
+stdContext = [("DICO"     , TypeFun $ noContext stdPrint)
+             ,("ANNVNCIO" , TypeFun $ noContext stdPrint)
+             ,("DIMMI"    , TypeFun stdRead)
+             ,("ACCAPO"   , TypeStr "\n")
+             ,("PIV"      , TypeFun $ noContext $ stdArith (+) 0)
+             ,("MENO"     , TypeFun $ noContext $ stdArith (-) 0)
+             ,("PER"      , TypeFun $ noContext $ stdArith (*) 1)
+             ,("DIVISO"   , TypeFun $ noContext $ stdArith div 1)
+             ,("MAGGIORE" , TypeFun $ noContext $ stdCmpOrd (>))
+             ,("MINORE"   , TypeFun $ noContext $ stdCmpOrd (<))
+             ,("VGVALE"   , TypeFun $ noContext $ stdCmpEq (==))
+             ,("DIVERSO"  , TypeFun $ noContext $ stdCmpEq (/=))
+             ,("QVALCVNO" , TypeFun $ noContext $ stdLogic (||) False)
+             ,("TVTTI"    , TypeFun $ noContext $ stdLogic (&&) True)
+             ,("VERITIERO", TypeFun $ noContext $ stdCoerce)
              ]
 
 
@@ -64,7 +65,7 @@ stdArith f neuter = return . TypeInt . func neuter
                     func n (TypeInt x:xs) = f x (func n xs)
                     func _ _ = error "stdArith: invalid operands"
 
-stdCmpEq :: (DvxComparable a -> DvxComparable b-> Bool) -> [DvxValue] -> IO DvxValue
+stdCmpEq :: (DvxComparable a -> DvxComparable b -> Bool) -> [DvxValue] -> IO DvxValue
 stdCmpEq f = return . TypeBool . func
              where
              func :: [DvxValue] -> Bool
@@ -88,3 +89,7 @@ stdLogic f dflt = return . TypeBool . func dflt
                   func def (TypeInt  x:xs) = f (x /= 0) (func def xs)
                   func def (TypeStr  x:xs) = f (not $ null x) (func def xs)
                   func _ _ = error "stdLogic: invalid operands"
+
+stdCoerce :: [DvxValue] -> IO DvxValue
+stdCoerce []    = return $ TypeBool False
+stdCoerce (x:_) = return $ coerceToBool x
