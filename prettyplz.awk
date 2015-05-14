@@ -3,14 +3,17 @@
 
 function print_indent(ind,    i) {
 	for (i = 0; i < ind; ++i)
-		printf "\t"
+		printf "   "
 }
 
 {
 	for (c = 1; c <= length($0); ++c) {
 		ch = substr($0, c, 1)
 		if (ch == "[") {
-			printf "[\n"
+			if (pythonic)
+				printf "\n"
+			else
+				printf "[\n"
 			print_indent(++indent)
 		} else if (ch == "(") {
 			in_args = 1
@@ -22,13 +25,18 @@ function print_indent(ind,    i) {
 			if (in_args)
 				printf ", "
 			else {
-				printf ",\n"
+				if (!pythonic) printf ","
+				print ""
 				print_indent(indent)
 			}
 		} else if (ch == "]") {
-			printf "\n"
-			print_indent(--indent)
-			printf "]"
+			if (pythonic) {
+				--indent
+			} else {
+				print ""
+				print_indent(--indent)
+				printf "]"
+			}
 		} else {
 			printf ch
 		}

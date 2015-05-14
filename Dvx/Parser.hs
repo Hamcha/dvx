@@ -10,6 +10,8 @@ module Dvx.Parser
 , Function
 , tokenize
 , parse
+, preparse
+,
 ) where
 
 import Dvx.Tokens
@@ -53,6 +55,9 @@ separators = " ,.!:;"
 parse :: [DvxToken] -> [DvxExpr]
 parse = joinsub . map (makeast . foldr parseTokens []) . splitOn TPeriod
 
+preparse :: [DvxToken] -> [DvxExpr]
+preparse = joinsub . map (foldr parseTokens []) . splitOn TPeriod
+
 -- |Makes a fully parsed AST off a raw tree
 makeast :: [DvxExpr] -> [DvxExpr]
 makeast [] = []
@@ -70,7 +75,7 @@ makeast (DvxTok TIf
                           :_)
                  :_)
         :ys)
-        = DvxIf (makeast [iftok,iflist] !! 0)
+        = DvxIf (makeast [iftok, iflist] !! 0)
                 (makeast [iftruetok, iftruelist] !! 0)
                 (makeast iffalse !! 0)
           : makeast ys
