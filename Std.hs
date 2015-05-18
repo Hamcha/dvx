@@ -35,6 +35,7 @@ stdContext = [("DICO"     , TypeFun $ noContext stdPrint)
              ,("QVALCVNO" , TypeFun $ noContext $ stdLogic (||) False)
              ,("TVTTI"    , TypeFun $ noContext $ stdLogic (&&) True)
              ,("VERITIERO", TypeFun $ noContext $ stdCoerce)
+             ,("NON"      , TypeFun $ noContext $ stdNot)
              ]
 
 
@@ -93,3 +94,7 @@ stdLogic f dflt = return . TypeBool . func dflt
 stdCoerce :: [DvxValue] -> IO DvxValue
 stdCoerce []    = return $ TypeBool False
 stdCoerce (x:_) = return $ coerceToBool x
+
+stdNot :: [DvxValue] -> IO DvxValue
+stdNot []    = error "stdNot: needs exactly 1 argument."
+stdNot (x:_) = let (TypeBool b) = coerceToBool x in return $ TypeBool $ not b

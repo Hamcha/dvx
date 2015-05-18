@@ -20,7 +20,7 @@ syn match dvxNumberLiteral /'[XIVLCDM]\+'/
 syn match dvxZero /'ZERO'/
 
 " Std functions
-syn keyword dvxCoreFunc DICO ANNVNCIO DIMMI ACCAPO PIV MENO PER DIVISO MAGGIORE MINORE VGVALE DIVERSO QVALCVNO TVTTI VERITIERO
+syn keyword dvxCoreFunc DICO ANNVNCIO DIMMI ACCAPO PIV MENO PER DIVISO MAGGIORE MINORE VGVALE DIVERSO QVALCVNO TVTTI VERITIERO NON
 
 hi link dvxPrelude       Include
 hi link dvxDef           Type

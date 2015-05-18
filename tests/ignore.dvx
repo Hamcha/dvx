@@ -1,0 +1,9 @@
+ITALIANI!
+
+DEFINENDO BOH
+    OVE _; 
+    È 'ZERO'.
+
+SE BOH _;
+    ALLORA DICO {OK};
+    ALTRIMENTI DICO {NO}.

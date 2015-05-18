@@ -108,6 +108,13 @@ resolveValue c (DvxVar s)        = return $ getVar c s
 resolveValue c (DvxCall fn args) = return . fst =<< executeExpr c (DvxCall fn args)
 resolveValue _ v                 = error $ "Can't resolve " ++ show v
 
+-- |Coerces a Dvx value to a TypeBool.
+-- |Falsy values are:
+-- |  - the Nil value
+-- |  - the number 0
+-- |  - the empty string
+-- |  - the empty list
+-- | All other values are coerced to True.
 coerceToBool :: DvxValue -> DvxValue
 coerceToBool (TypeNil   ) = TypeBool False
 coerceToBool (TypeBool a) = TypeBool a
