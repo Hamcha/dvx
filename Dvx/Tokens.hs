@@ -8,7 +8,9 @@ module Dvx.Tokens
 ) where
 
 -- |DVX Tokens (derived from code, used in AST building)
-data DvxToken = TBool      Bool
+data DvxToken = TBraceOpen
+              | TBraceClose
+              | TBool       Bool
               | TColon
               | TComma
               | TDefn
@@ -17,15 +19,15 @@ data DvxToken = TBool      Bool
               | TElse
               | TIf
               | TIgnore
-              | TName      String
+              | TName       String
               | TNil
               | TNullCall
-              | TNumber    Int
+              | TNumber     Int
               | TPeriod
               | TPrelude
               | TSemicolon
               | TSpace
-              | TString    String
+              | TString     String
               | TThen
               | TVarValue
               | TWhile
@@ -34,12 +36,15 @@ data DvxToken = TBool      Bool
 -- |Keywords definition
 token :: String -> DvxToken
 token " "          = TSpace
+token "\t"         = TSpace
 token ","          = TComma
 token "!"          = TPeriod
 token "."          = TPeriod
 token ":"          = TColon
 token ";"          = TSemicolon
 token "_"          = TIgnore
+token "("          = TBraceOpen
+token ")"          = TBraceClose
 token "ITALIANI"   = TPrelude
 token "DEFINENDO"  = TDefn
 token "NOMINO"     = TDefVar

@@ -50,7 +50,7 @@ data DvxExpr  = DvxTok   DvxToken                  -- ^ Unparsed token
               deriving Show
 
 separators :: String
-separators = " ,.!:;"
+separators = "\t ,.!:;"
 
 parse :: [DvxToken] -> [DvxExpr]
 parse = joinsub . map (makeast . foldr parseTokens []) . splitOn TPeriod
